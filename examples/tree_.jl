@@ -14,7 +14,7 @@ function tree()
 	init_tree()								    # Initializes IupTree */
 	init_dlg()                                  # Initializes the dialog
 	dlg = IupGetHandle("dlg")                   # Retrieves the dialog handle
-	IupShowXY (dlg, IUP_CENTER, IUP_CENTER)     # Displays the dialog (at screen center)
+	IupShowXY(dlg, IUP_CENTER, IUP_CENTER)     # Displays the dialog (at screen center)
 	init_tree_atributes()                       # Initializes attributes, can be done here or anywhere */
 
 	IupMainLoop()                               # Initializes IUP main loop
@@ -25,7 +25,7 @@ end
 function init_tree()
 	tree = IupTree()
 
-	IupSetCallback(tree, "RENAME_CB", cfunction(rename_cb, Cint, (Ptr{Ihandle}, Cint, Ptr{Uint8})))
+	IupSetCallback(tree, "RENAME_CB", cfunction(rename_cb, Cint, (Ptr{Ihandle}, Cint, Ptr{UInt8})))
 	IupSetCallback(tree, "EXECUTELEAF_CB", cfunction(executeleaf_cb, Cint, (Ptr{Ihandle}, Cint)))
 	IupSetCallback(tree, "BRANCHCLOSE_CB", cfunction(branchclose_cb, Cint, (Ptr{Ihandle}, Cint)))
 	IupSetCallback(tree, "BRANCHOPEN_CB",  cfunction(branchopen_cb,  Cint, (Ptr{Ihandle}, Cint)))
@@ -70,7 +70,7 @@ function init_dlg()
 	IupSetHandle("dlg",dlg)
 end
 
-function rename_cb(h::Ptr{Ihandle}, id::Cint, name::Ptr{Uint8})
+function rename_cb(h::Ptr{Ihandle}, id::Cint, name::Ptr{UInt8})
 	@printf("rename_cb (%d=%s)\n", id, name)
 	if (name == "fool")
 		return convert(Cint, IUP_IGNORE)
@@ -98,23 +98,23 @@ function rightclick_cb(h::Ptr{Ihandle}, id::Cint)
 	#static char id_string[10];
 
 	popup_menu = IupMenu(
-		IupItem ("Add Leaf","addleaf"),
-		IupItem ("Add Branch","addbranch"),
-		IupItem ("Rename Node","renamenode"),
-		IupItem ("Remove Node","removenode"),
+		IupItem("Add Leaf","addleaf"),
+		IupItem("Add Branch","addbranch"),
+		IupItem("Rename Node","renamenode"),
+		IupItem("Remove Node","removenode"),
 			IupSubmenu("Selection", IupMenu(
-				IupItem ("ROOT", "selectnode"),
-				IupItem ("LAST", "selectnode"),
-				IupItem ("PGUP", "selectnode"),
-				IupItem ("PGDN", "selectnode"),
-				IupItem ("NEXT", "selectnode"),
-				IupItem ("PREVIOUS", "selectnode"),
+				IupItem("ROOT", "selectnode"),
+				IupItem("LAST", "selectnode"),
+				IupItem("PGUP", "selectnode"),
+				IupItem("PGDN", "selectnode"),
+				IupItem("NEXT", "selectnode"),
+				IupItem("PREVIOUS", "selectnode"),
 				IupSeparator(),
-				IupItem ("INVERT", "selectnode"),
-				IupItem ("BLOCK", "selectnode"),
-				IupItem ("CLEARALL", "selectnode"),
-				IupItem ("MARKALL", "selectnode"),
-				IupItem ("INVERTALL", "selectnode"),
+				IupItem("INVERT", "selectnode"),
+				IupItem("BLOCK", "selectnode"),
+				IupItem("CLEARALL", "selectnode"),
+				IupItem("MARKALL", "selectnode"),
+				IupItem("INVERTALL", "selectnode"),
 				C_NULL)),
 	C_NULL);
     
@@ -135,7 +135,7 @@ end
 
 function selectnode(h::Ptr{Ihandle})
 	tree = IupGetHandle("tree")
-	IupSetAttribute(tree,"VALUE",bytestring(IupGetAttribute(h, "TITLE")))
+	IupSetAttribute(tree,"VALUE",unsafe_string(IupGetAttribute(h, "TITLE")))
 	return convert(Cint, IUP_DEFAULT)
 end
 

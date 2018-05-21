@@ -18,56 +18,57 @@ include("../src/im_convert.jl")
 include("../src/im_process_h.jl")
 include("../src/im_process.jl")
 include("../src/iupim.jl")
-include("../src/iupim_h.jl")
+#include("../src/iupim_h.jl")
 include("../src/iupcontrols.jl")
 include("../src/iup_mglplot.jl")
-include("../src/iup_mglplot_h.jl")
+#include("../src/iup_mglplot_h.jl")
 include("../src/iupkey_h.jl")
 
 
 global test_list = [
-  {"Plot (Linear 1D)" "SamplePlotLinear1D"},
-  {"Plot (Linear 3D)" "SamplePlotLinear3D"},
-  {"Radar (Linear 1D)" "SampleRadarLinear1D"},
-  {"Area (Linear 1D)" "SampleAreaLinear1D"},
-  {"Bars (Linear 1D)" "SampleBarsLinear1D"},
-  {"Bars (Linear 3D)" "SampleBarsLinear3D"},
-  {"Barh (Linear 1D)" "SampleBarhLinear1D"},
-  {"Step (Linear 1D)" "SampleStepLinear1D"},
-  {"Stem (Linear 1D)" "SampleStemLinear1D"},
-  {"Chart (Linear 1D)" "SampleChartLinear1D"},
-  {"Pie (Linear 1D)" "SamplePieLinear1D"},
-  {"Dots (Linear 3D)" "SampleDotsLinear3D"},
-  {"Crust (Linear 3D)" "SampleCrustLinear3D"},
-  {"----------" "Dummy"},
-  {"Surface (Planar)" "SampleSurfacePlanar"},
-  {"Surface Colors (Planar)" "SampleSurfaceColorsPlanar"},
-  {"Surface Contour (Planar)" "SampleSurfaceContourPlanar"},
-  {"Mesh (Planar)" "SampleMeshPlanar"},
-  {"Fall (Planar)" "SampleFallPlanar"},
-  {"Belt (Planar)" "SampleBeltPlanar"},
-  {"Tile (Planar)" "SampleTilePlanar"},
-  {"Boxes (Planar)" "SampleBoxesPlanar"},
-  {"Density (Planar)" "SampleDensityPlanar"},
-  {"Contour (Planar)" "SampleContourPlanar"},
-  {"Contour Filled (Planar)" "SampleContourFilledPlanar"},
-  {"Axial Contour (Planar)" "SampleAxialContourPlanar"},
-  {"GradientLines (Planar)" "SampleGradientLinesPlanar"},
-  {"----------" "Dummy"},
-  {"Iso Surface (Volume)" "SampleIsoSurfaceVolume"},
-  {"CloudCubes (Volume)" "SampleCloudCubesVolume"},
-  {"Cloud (Volume)" "SampleCloudVolume"},
-  {"Density (Volume)" "SampleDensityVolume"},
-  {"Contour (Volume)" "SampleContourVolume"},
-  {"ContourFilled (Volume)" "SampleContourFilledVolume"},
-  {"ContourProject (Volume)" "SampleContourProjectVolume"},
-  {"ContourFilledProject (Volume)" "SampleContourFilledProjectVolume"},
-  {"DensityProject (Volume)" "SampleDensityProjectVolume"},
-  {"----------" "Dummy"},
-  {"Text Styles" "SampleText"},
-  {"Legend" "SampleLegend"},
-  {"Semi-log" "SampleSemiLog"},
-  {"Log-log" "SampleLogLog"}]
+  ["Plot (Linear 1D)" "SamplePlotLinear1D"],
+  ["Plot (Linear 3D)" "SamplePlotLinear3D"],
+  ["Radar (Linear 1D)" "SampleRadarLinear1D"],
+  ["Area (Linear 1D)" "SampleAreaLinear1D"],
+  ["Bars (Linear 1D)" "SampleBarsLinear1D"],
+  ["Bars (Linear 3D)" "SampleBarsLinear3D"],
+  ["Barh (Linear 1D)" "SampleBarhLinear1D"],
+  ["Step (Linear 1D)" "SampleStepLinear1D"],
+  ["Stem (Linear 1D)" "SampleStemLinear1D"],
+  ["Chart (Linear 1D)" "SampleChartLinear1D"],
+  ["Pie (Linear 1D)" "SamplePieLinear1D"],
+  ["Dots (Linear 3D)" "SampleDotsLinear3D"],
+  ["Crust (Linear 3D)" "SampleCrustLinear3D"],
+  ["----------" "Dummy"],
+  ["Surface (Planar)" "SampleSurfacePlanar"],
+  ["Surface Colors (Planar)" "SampleSurfaceColorsPlanar"],
+  ["Surface Contour (Planar)" "SampleSurfaceContourPlanar"],
+  ["Mesh (Planar)" "SampleMeshPlanar"],
+  ["Fall (Planar)" "SampleFallPlanar"],
+  ["Belt (Planar)" "SampleBeltPlanar"],
+  ["Tile (Planar)" "SampleTilePlanar"],
+  ["Boxes (Planar)" "SampleBoxesPlanar"],
+  ["Density (Planar)" "SampleDensityPlanar"],
+  ["Contour (Planar)" "SampleContourPlanar"],
+  ["Contour Filled (Planar)" "SampleContourFilledPlanar"],
+  ["Axial Contour (Planar)" "SampleAxialContourPlanar"],
+  ["GradientLines (Planar)" "SampleGradientLinesPlanar"],
+  ["----------" "Dummy"],
+  ["Iso Surface (Volume)" "SampleIsoSurfaceVolume"],
+  ["CloudCubes (Volume)" "SampleCloudCubesVolume"],
+  ["Cloud (Volume)" "SampleCloudVolume"],
+  ["Density (Volume)" "SampleDensityVolume"],
+  ["Contour (Volume)" "SampleContourVolume"],
+  ["ContourFilled (Volume)" "SampleContourFilledVolume"],
+  ["ContourProject (Volume)" "SampleContourProjectVolume"],
+  ["ContourFilledProject (Volume)" "SampleContourFilledProjectVolume"],
+  ["DensityProject (Volume)" "SampleDensityProjectVolume"],
+  ["----------" "Dummy"],
+  ["Text Styles" "SampleText"],
+  ["Legend" "SampleLegend"],
+  ["Semi-log" "SampleSemiLog"],
+  ["Log-log" "SampleLogLog"]]
+
 
 # ----------------------------------------------------------------------------------
 # Since there is no feval in Julia just simulate it here for the current need
@@ -159,7 +160,7 @@ end
 function mathglsamples()
 	global plot, test_list
 
-	count = size(test_list,1)
+	count = size(test_list)[1]
 	#count = 3
 
 	IupOpen()	#Initializes IUP
@@ -187,11 +188,11 @@ function mathglsamples()
 	IupSetAttribute(list, "EXPAND", "VERTICAL")
 	IupSetAttribute(list, "VISIBLELINES", "15")            # Not all, because the dialog will be too big
 	IupSetAttribute(list, "VISIBLECOLUMNS", "15")
-	IupSetCallback(list, "ACTION", cfunction(action_cb, Int, (Ptr{Ihandle}, Ptr{Uint8}, Int, Int)))
+	IupSetCallback(list, "ACTION", cfunction(action_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int, Int)))
 
-	for (i = 1:count)
+	for i = 1:count
 		str = @sprintf("%d", i)
-		IupSetAttribute(list, str, test_list[i,1])
+		IupSetAttribute(list, str, test_list[i][1])
 	end
 
 	IupSetAttribute(list, "VALUE", "1")
@@ -333,11 +334,11 @@ function ChangePlot(item::Int)
 	global plot, filenameSVG, filenameEPS, filenamePNG, test_list
 
 	ResetClear()
-	feval(test_list[item,2])
+	feval(test_list[item][2])
 	UpdateFlags()
-	filenameSVG = @sprintf("../%s.svg", test_list[item,1])
-	filenameEPS = @sprintf("../%s.eps", test_list[item,1])
-	filenamePNG = @sprintf("../%s.png", test_list[item,1])
+	filenameSVG = @sprintf("../%s.svg", test_list[item][1])
+	filenameEPS = @sprintf("../%s.eps", test_list[item][1])
+	filenamePNG = @sprintf("../%s.png", test_list[item][1])
 	#filenameSVG = "lixo.svg"
 	#filenameEPS = "lixo.eps"
 	#filenamePNG = "lixo.png"
@@ -348,7 +349,7 @@ function ChangePlot(item::Int)
 
 	errmsg = IupGetAttribute(plot, "ERRORMESSAGE")
 	try
-		errmsg = bytestring(errmsg)		# This will error if pointer is NULL
+		errmsg = unsafe_string(errmsg)		# This will error if pointer is NULL
 		IupMessage("Error", errmsg)		# Found f no way to test if the pointer is NULL
 	end
 end
@@ -399,7 +400,7 @@ function UpdateFlags()
 
 	# grid
 	value = IupGetAttribute(plot, "GRID")
-	if (value != 0 && search(bytestring(value), "XYZ") != 0)
+	if (value != 0 && search(unsafe_string(value), "XYZ") != 0)
 		IupSetAttribute(grid_tgg, "VALUE", "ON")
 	else
 		IupSetAttribute(grid_tgg, "VALUE", "OFF")
@@ -510,7 +511,7 @@ function k_enter_cb(ih::Ptr{Ihandle})
 end
 
 # --------------------------------------------------------------------------------------
-function action_cb(ih::Ptr{Ihandle}, text::Ptr{Uint8}, item::Int, state::Int)
+function action_cb(ih::Ptr{Ihandle}, text::Ptr{UInt8}, item::Int, state::Int)
 	if (state == 1)
 		ChangePlot(item)
 	end
@@ -540,8 +541,8 @@ function minmaxY_dial_btnup_cb(self::Ptr{Ihandle}, angle::Float64)
 	x2 = IupGetFloat(plot, "OLD_YMAX")
 
 	ss = IupGetAttribute(plot, "AXS_YMODE")
-	if (ss != C_NULL)			# Otherwise bytestring barfs
-		ss = bytestring(ss)
+	if (ss != C_NULL)			# Otherwise String barfs
+		ss = unsafe_string(ss)
 	end
 	if (ss != C_NULL && ss[3] == '2')		# LOG2:  one circle will zoom 2 times */
 		xm = 4.0 * fabs(angle) / 3.141592
@@ -943,7 +944,7 @@ function SamplePlanar(ds_mode::String)
 	global plot
 
 	ds = IupMglPlotNewDataSet(plot, 1);
-	IupMglPlotSetFromFormula(plot, int(ds), "0.6*sin(2*pi*x)*sin(3*pi*y) + 0.4*cos(3*pi*(x*y))", 50, 40, 1);
+	IupMglPlotSetFromFormula(plot, Int(ds), "0.6*sin(2*pi*x)*sin(3*pi*y) + 0.4*cos(3*pi*(x*y))", 50, 40, 1);
 	IupSetAttribute(plot, "DS_MODE", ds_mode);
 
 	IupSetAttribute(plot, "ROTATE", "40:0:60");

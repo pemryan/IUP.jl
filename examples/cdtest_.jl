@@ -1,8 +1,11 @@
 module cdtest_
 
+include("../src/IUP_IM.jl")
+include("../src/IUP_CD.jl")
+
 using IUP
-using IUP_IM
 using IUP_CD
+using IUP_IM
 
 include("../src/libiup_h.jl")
 include("../src/im_process_h.jl")
@@ -71,11 +74,11 @@ global ctgc = tCTC(
         C_NULL,
         int32(0),
 #        Array_300_tPoint,
-#        Array_256_Uint8,
-#        Array_80_Uint8,
+#        Array_256_UInt8,
+#        Array_80_UInt8,
         int32(0),
         int32(0),
-#        Array_40_Uint8,
+#        Array_40_UInt8,
         int32(0),
         int32(0)
 #        Ptr{tList}    
@@ -149,7 +152,7 @@ h = unsafe_load(h)
 
 	# os call-backs do canvas devem ser associados depois de sua criacao */
 	#IupSetFunction("cmdRepaint", (Icallback) fRepaint);
-	IupSetFunction("cmdMotionCB", cfunction(fMotionCB, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{Uint8})))
+	IupSetFunction("cmdMotionCB", cfunction(fMotionCB, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{UInt8})))
 	IupSetFunction("cmdButtonCB", cfunction(fButtonCB, Int, (Ptr{Ihandle}, Char, Cint, Cint, Cint, Cint)))
 	#IupSetFunction("cmdResizeCB", (Icallback) fResizeCB);
 	#IupSetFunction("cmdGetFocusCB", (Icallback) fGetFocusCB);
@@ -260,7 +263,7 @@ h = unsafe_load(h)
 	if (use_contextplus != 0) cdUseContextPlus(1)	end
 	ctgc.wd_canvas  = cdCreateCanvas(cdContextIup(), IupGetHandle("cnvWDCanvas"));
 	ctgc.pic_canvas = cdCreateCanvas(cdContextIup(), IupGetHandle("cnvPICCanvas"));
-	ctgc.picture    = cdCreateCanvas(cdContextIup(), convert(Ptr{Void}, convert(Ptr{Uint8},"")))
+	ctgc.picture    = cdCreateCanvas(cdContextIup(), convert(Ptr{Void}, convert(Ptr{UInt8},"")))
 	if (use_contextplus != 0) cdUseContextPlus(0)	end
 
 	# CDTEST default values */
@@ -706,11 +709,11 @@ function iscurvisible()
 	if (vis == C_NULL)
 		return 0
 	end
-	return (bytestring(vis) == "YES") ? 1 : 0
+	return (unsafe_string(vis) == "YES") ? 1 : 0
 end
 
 # ------------------------------------------------------------------------
-function fMotionCB(self::Ptr{Ihandle}, x::Int32, y::Int32, r::Ptr{Uint8})
+function fMotionCB(self::Ptr{Ihandle}, x::Int32, y::Int32, r::Ptr{UInt8})
 
 	if (ctgc.iup_canvas == C_NULL)
 		return IUP_DEFAULT

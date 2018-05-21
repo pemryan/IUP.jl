@@ -1100,9 +1100,9 @@ const IUP_GETPARAM_OK = -1
 const IUP_GETPARAM_INIT = -2
 const IUP_GETPARAM_CANCEL = -3
 const IUP_GETPARAM_HELP = -4
-typealias Ihandle Void
-typealias Icallback Ptr{Void}
-typealias Iparamcb Ptr{Void}
+const Ihandle = Void
+const Icallback = Ptr{Void}
+const Iparamcb = Ptr{Void}
 # begin enum ANONYMOUS_1
 const IUP_SHOW = 0
 const IUP_RESTORE = 1

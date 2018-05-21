@@ -457,8 +457,8 @@ end
 function imCalcByteHistogram(data::Ptr{Cuchar}, count::Cint, histo::Ptr{Culong}, cumulative::Cint)
   ccall( (:imCalcByteHistogram, libim_process_), Void, (Ptr{Cuchar}, Cint, Ptr{Culong}, Cint), data, count, histo, cumulative)
 end
-function imCalcUShortHistogram(data::Ptr{Uint16}, count::Cint, histo::Ptr{Culong}, cumulative::Cint)
-  ccall( (:imCalcUShortHistogram, libim_process_), Void, (Ptr{Uint16}, Cint, Ptr{Culong}, Cint), data, count, histo, cumulative)
+function imCalcUShortHistogram(data::Ptr{UInt16}, count::Cint, histo::Ptr{Culong}, cumulative::Cint)
+  ccall( (:imCalcUShortHistogram, libim_process_), Void, (Ptr{UInt16}, Cint, Ptr{Culong}, Cint), data, count, histo, cumulative)
 end
 function imCalcShortHistogram(data::Ptr{Int16}, count::Cint, histo::Ptr{Culong}, cumulative::Cint)
   ccall( (:imCalcShortHistogram, libim_process_), Void, (Ptr{Int16}, Cint, Ptr{Culong}, Cint), data, count, histo, cumulative)

@@ -439,7 +439,7 @@ global tgg3, tgg4
 global tgg5
 global tabs
 
-  ss = bytestring(IupGetAttribute(new_tab, "TABTITLE"))
+  ss = unsafe_string(IupGetAttribute(new_tab, "TABTITLE"))
   #ss += 5; # Skip "Plot "
   #ii = atoi(ss);
   ii = parseint(ss[6]) 		# Where the hell is atoi() ????
@@ -542,7 +542,7 @@ end
 # ---------------------------------------------------------------------------
 function tabs_get_index()
 	curr_tab = IupGetHandle(IupGetAttribute(tabs, "VALUE"));
-	ss = bytestring(IupGetAttribute(curr_tab, "TABTITLE"))
+	ss = unsafe_string(IupGetAttribute(curr_tab, "TABTITLE"))
 	ii = parseint(ss[6]) 		# Where the hell is atoi() ????
 	return ii
 end
@@ -551,7 +551,7 @@ end
 # will be updated according to current plot props
 function tabs_tabchange_cb(self::Ptr{Ihandle}, new_tab::Ptr{Ihandle})
 
-	ss = bytestring(IupGetAttribute(new_tab, "TABTITLE"))
+	ss = unsafe_string(IupGetAttribute(new_tab, "TABTITLE"))
 	ii = parseint(ss[6]) 		# Where the hell is atoi() ????
 
 	# autoscaling
@@ -578,7 +578,7 @@ function tabs_tabchange_cb(self::Ptr{Ihandle}, new_tab::Ptr{Ihandle})
     IupSetAttribute(tgg4, "VALUE", "ON");
   else
     # X axis
-    s = bytestring(IupGetAttribute(plot[ii], "GRID"))
+    s = unsafe_string(IupGetAttribute(plot[ii], "GRID"))
     if (s[1] == 'V')
       IupSetAttribute(tgg3, "VALUE", "ON");
     else

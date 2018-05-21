@@ -1390,7 +1390,7 @@ type cdBitmap
     data::Ptr{Void}
 end
 
-typealias cdCallback Ptr{Void}
+const cdCallback = Ptr{Void}
 # begin enum ANONYMOUS_3
 const CD_RGB = 0
 const CD_MAP = 1
@@ -1534,7 +1534,7 @@ const CD_CTX_DEVICE = 1
 const CD_CTX_IMAGE = 2
 const CD_CTX_FILE = 3
 # end enum ANONYMOUS_23
-typealias cdSizeCB Ptr{Void}
+const cdSizeCB = Ptr{Void}
 # begin enum ANONYMOUS_24
 const CD_A0 = 0
 const CD_A1 = 1

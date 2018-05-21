@@ -158,7 +158,7 @@ function setcallbacks(handles::Handles)
 end
 
 # ------------------------------------------------------------------------
-function fMotionCB(hand::Ptr{Ihandle}, x::Int32, y::Int32, r::Ptr{Uint8})
+function fMotionCB(hand::Ptr{Ihandle}, x::Int32, y::Int32, r::Ptr{UInt8})
 	handles = guidata(hand)
 	yp = convert(Ptr{Cint}, pointer([y]))
 	cdCanvasUpdateYAxis(handles.cd_canvas, yp)
@@ -170,7 +170,7 @@ end
 #-------------------------------------------------------------------------
 # Function associated to the mouse buttons
 #-------------------------------------------------------------------------
-function fButtonCB(hand::Ptr{Ihandle}, b::Char, e::Integer, x::Integer, y::Integer, r::Ptr{Uint8})
+function fButtonCB(hand::Ptr{Ihandle}, b::Char, e::Integer, x::Integer, y::Integer, r::Ptr{UInt8})
 	handles = guidata(hand)
 
 	cdCanvasActivate(handles.cd_canvas)
@@ -275,7 +275,7 @@ end
 
 # --------------------------------------------------------------------------------
 function ShowImage(FileName::String, iup_dialog::Ptr{Ihandle})
-	image = IupGetAttribute(iup_dialog, "imImage")		# typeof(image) => Ptr{Uint8}
+	image = IupGetAttribute(iup_dialog, "imImage")		# typeof(image) => Ptr{UInt8}
 	image = convert(Ptr{imImage}, image)		# If I use Ptr{imImage} it Booms???
 	if (image != C_NULL)
 		imImageDestroy(image)
@@ -296,7 +296,7 @@ function ShowImage(FileName::String, iup_dialog::Ptr{Ihandle})
 	handles = guidata(iup_dialog)
 	IupSetAttribute(handles.figure1, "CLIENTSIZE", @sprintf("%dx%d", max(img.width,730), img.height+72))
 	IupRefresh(handles.figure1)
-@show(bytestring(IupGetAttribute(handles.figure1, "RASTERSIZE")))
+@show(unsafe_string(IupGetAttribute(handles.figure1, "RASTERSIZE")))
 
 	IupSetAttribute(iup_dialog, "imImage", image);
 	cbCanvasRepaint(iup_dialog)   # we can do this because canvas inherit attributes from the dialog */
@@ -353,7 +353,7 @@ end
 
 # ----------------------------------------------------------------------------------------------
 function imlabCreateButtonImages()
-	new_bits = Uint8[
+	new_bits = UInt8[
 		2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 		,3,2,2,1,3,2,2,1,2,2,2,2,2,2,2,2
 		,1,3,2,1,4,2,1,3,2,2,2,2,2,2,2,2
@@ -381,7 +381,7 @@ function imlabCreateButtonImages()
 		""
 	]
 
-	open_bits = Uint8[
+	open_bits = UInt8[
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,
 		1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,
@@ -408,7 +408,7 @@ function imlabCreateButtonImages()
 		""
 	]
 
-	line_bits = Uint8[
+	line_bits = UInt8[
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,

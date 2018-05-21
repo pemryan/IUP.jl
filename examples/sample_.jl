@@ -221,7 +221,7 @@ function SampleTest()
 	#IupSetAttribute(box, "FGCOLOR", "255 0 0")
 	#IupSetAttribute(dlg,"RASTERSIZE","1000x800")
 
-	IupSetCallback(dlg, "COPYDATA_CB", cfunction(copydata_cb, Int, (Ptr{Ihandle}, Ptr{Uint8}, Int)))
+	IupSetCallback(dlg, "COPYDATA_CB", cfunction(copydata_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int)))
 
 	#IupSetGlobal("INPUTCALLBACKS", "Yes");
 	#IupSetFunction("GLOBALKEYPRESS_CB", (Icallback)globalkeypress_cb);
@@ -243,8 +243,8 @@ function SampleTest()
 	# IupSetAttribute(dlg,"RASTERSIZE", C_NULL);
 end
 
-function copydata_cb(ih::Ptr{Ihandle}, value::Ptr{Uint8}, size::Int)
-	@printf("COPYDATA(%s, %d)\n", bytestring(value), size)
+function copydata_cb(ih::Ptr{Ihandle}, value::Ptr{UInt8}, size::Int)
+	@printf("COPYDATA(%s, %d)\n", unsafe_string(value), size)
 	return IUP_DEFAULT
 end
 
@@ -281,8 +281,8 @@ function action3_cb(ih::Ptr{Ihandle})
 end
 
 function valuechanged_cb(ih::Ptr{Ihandle})
-	@printf("VALUECHANGED_CB(%s)=%s\n", bytestring(IupGetClassName(ih)),
-		bytestring(IupGetAttribute(ih, "VALUE")))
+	@printf("VALUECHANGED_CB(%s)=%s\n", unsafe_string(IupGetClassName(ih)),
+		unsafe_string(IupGetAttribute(ih, "VALUE")))
 	return IUP_DEFAULT
 end
 
@@ -305,27 +305,27 @@ function k_any(ih::Ptr{Ihandle}, c::Int)
 end
 
 function help_cb(ih::Ptr{Ihandle})
-	@printf("HELP_CB(%s)\n", bytestring(IupGetClassName(ih)))
+	@printf("HELP_CB(%s)\n", unsafe_string(IupGetClassName(ih)))
 	return IUP_DEFAULT
 end
 
 function getfocus_cb(ih::Ptr{Ihandle})
-	@printf("GETFOCUS_CB(%s)\n", bytestring(IupGetClassName(ih)))
+	@printf("GETFOCUS_CB(%s)\n", unsafe_string(IupGetClassName(ih)))
 	return IUP_DEFAULT
 end
 
 function killfocus_cb(ih::Ptr{Ihandle})
-	@printf("KILLFOCUS_CB(%s)\n", bytestring(IupGetClassName(ih)))
+	@printf("KILLFOCUS_CB(%s)\n", unsafe_string(IupGetClassName(ih)))
 	return IUP_DEFAULT
 end
 
 function leavewindow_cb(ih::Ptr{Ihandle})
-	@printf("LEAVEWINDOW_CB(%s)\n", bytestring(IupGetClassName(ih)))
+	@printf("LEAVEWINDOW_CB(%s)\n", unsafe_string(IupGetClassName(ih)))
 	return IUP_DEFAULT
 end
 
 function enterwindow_cb(ih::Ptr{Ihandle})
-	@printf("ENTERWINDOW_CB(%s)\n", bytestring(IupGetClassName(ih)))
+	@printf("ENTERWINDOW_CB(%s)\n", unsafe_string(IupGetClassName(ih)))
 	return IUP_DEFAULT
 end
 

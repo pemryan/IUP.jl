@@ -3,7 +3,7 @@
 
 @static is_windows()? (const libiupim_ = "iupim") : (const libiupim_ = "libiupim")  # Name of shared lib.
 
-typealias Ihandle Void
+const Ihandle = Void
 
 function IupLoadImage(file_name::String)
 	ccall((:IupLoadImage, libiupim_), Ptr{Ihandle}, (Ptr{UInt8},), file_name)

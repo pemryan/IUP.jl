@@ -45,7 +45,7 @@ end
 
 function button_press(c::Ptr{Ihandle}, a::Float64)
 	global lbl_v, lbl_h
-	type_ = bytestring(IupGetAttribute(c, "ORIENTATION"))
+	type_ = unsafe_string(IupGetAttribute(c, "ORIENTATION"))
 
 	if (type_[1] == 'V')
 		IupSetAttribute(lbl_v, "FGCOLOR", "255 0 0")
@@ -60,7 +60,7 @@ end
 
 function button_release(c::Ptr{Ihandle}, a::Float64)
 	global lbl_v, lbl_h
-	type_ = bytestring(IupGetAttribute(c, "ORIENTATION"))
+	type_ = unsafe_string(IupGetAttribute(c, "ORIENTATION"))
 
 	if (type_[1] == 'V')
 		IupSetAttribute(lbl_v, "FGCOLOR", "0 0 0")
@@ -77,7 +77,7 @@ function mousemove(c::Ptr{Ihandle}, a::Float64)
 	global lbl_v, lbl_h
 
 	buffer = @sprintf("VALUE=%.2f", a)
-	type_ = bytestring(IupGetAttribute(c, "ORIENTATION"))
+	type_ = unsafe_string(IupGetAttribute(c, "ORIENTATION"))
 
 	if (type_[1] == 'V')
 		IupStoreAttribute(lbl_v, "TITLE", buffer)

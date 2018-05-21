@@ -34,7 +34,7 @@ function getattribute()
 
 	@printf("Integer number: %d\n", IupGetInt(field, "VALUE"))       # prints the integer number entered by the user
 	@printf("Real number...: %f\n", IupGetFloat(field, "VALUE"))     # prints the real number entered by the user
-	@printf("Text entered..: %s\n", bytestring(IupGetAttribute(field, "VALUE"))) # prints the text entered by the user
+	@printf("Text entered..: %s\n", unsafe_string(IupGetAttribute(field, "VALUE"))) # prints the text entered by the user
 
 	IupClose()                                  # And close it when ready
 end

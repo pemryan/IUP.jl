@@ -108,9 +108,9 @@ function cbCanvasRepaint(iup_canvas::Ptr{Ihandle})
 	imcdCanvasPutImage(cd_canvas, img, 0, 0, img.width, img.height, 0, 0, 0, 0)
 #	imcdCanvasPutImage(cd_canvas, img, 20,20,int64(img.width/2), int64(img.height/2),  0, 0, 0, 0)
 
-	#=data = [convert(Ptr{Uint8}, unsafe_load(img.data,1)),
-			convert(Ptr{Uint8}, unsafe_load(img.data,2)),
-			convert(Ptr{Uint8}, unsafe_load(img.data,3))]
+	#=data = [convert(Ptr{UInt8}, unsafe_load(img.data,1)),
+			convert(Ptr{UInt8}, unsafe_load(img.data,2)),
+			convert(Ptr{UInt8}, unsafe_load(img.data,3))]
 	cdCanvasPutImageRectRGB(cd_canvas, img.width, img.height,
 					data[1], data[2], data[3],
 					0, 0, img.width, img.height, 0, 0, 0, 0)=#
@@ -121,7 +121,7 @@ end
 
 # --------------------------------------------------------------------------------
 function ShowImage(file_name::String, iup_dialog::Ptr{Ihandle})
-	image = IupGetAttribute(iup_dialog, "imImage")		# typeof(image) => Ptr{Uint8}
+	image = IupGetAttribute(iup_dialog, "imImage")		# typeof(image) => Ptr{UInt8}
 	image = convert(Ptr{imImage}, image)		# If I use Ptr{imImage} it Booms???
 	if (image != C_NULL)
 		imImageDestroy(image)
@@ -211,7 +211,7 @@ end
 
 # ----------------------------------------------------------------------------------------------
 function imlabCreateButtonImages()
-	new_bits = Uint8[
+	new_bits = UInt8[
 		2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 		,3,2,2,1,3,2,2,1,2,2,2,2,2,2,2,2
 		,1,3,2,1,4,2,1,3,2,2,2,2,2,2,2,2
@@ -239,7 +239,7 @@ function imlabCreateButtonImages()
 		""
 	]
 
-	open_bits = Uint8[
+	open_bits = UInt8[
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,
 		1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,0,

@@ -5,12 +5,12 @@
 # Skipping MacroDefinition: imImageEqualize(_image)imProcessEqualizeHistogram(_image,_image)
 # Skipping MacroDefinition: imImageNegative(_image)imProcessNegative(_image,_image)
 # Skipping MacroDefinition: imImageAutoLevel(_image,_percent)imProcessExpandHistogram(_image,_image,_percent)
-typealias imUnaryPointOpFunc Ptr{Void}
-typealias imUnaryPointColorOpFunc Ptr{Void}
-typealias imMultiPointOpFunc Ptr{Void}
-typealias imMultiPointColorOpFunc Ptr{Void}
+const imUnaryPointOpFunc = Ptr{Void}
+const imUnaryPointColorOpFunc = Ptr{Void}
+const imMultiPointOpFunc = Ptr{Void}
+const imMultiPointColorOpFunc = Ptr{Void}
 # begin enum imUnaryOp
-typealias imUnaryOp UInt32
+const imUnaryOp = UInt32
 const IM_UN_EQL = 0
 const IM_UN_ABS = 1
 const IM_UN_LESS = 2
@@ -27,7 +27,7 @@ const IM_UN_POSITIVES = 12
 const IM_UN_NEGATIVES = 13
 # end enum imUnaryOp
 # begin enum imBinaryOp
-typealias imBinaryOp UInt32
+const imBinaryOp = UInt32
 const IM_BIN_ADD = 0
 const IM_BIN_SUB = 1
 const IM_BIN_MUL = 2
@@ -38,15 +38,15 @@ const IM_BIN_MIN = 6
 const IM_BIN_MAX = 7
 # end enum imBinaryOp
 # begin enum imLogicOp
-typealias imLogicOp UInt32
+const imLogicOp = UInt32
 const IM_BIT_AND = 0
 const IM_BIT_OR = 1
 const IM_BIT_XOR = 2
 # end enum imLogicOp
-typealias imRenderFunc Ptr{Void}
-typealias imRenderCondFunc Ptr{Void}
+const imRenderFunc = Ptr{Void}
+const imRenderCondFunc = Ptr{Void}
 # begin enum imToneGamut
-typealias imToneGamut UInt32
+const imToneGamut = UInt32
 const IM_GAMUT_NORMALIZE = 0
 const IM_GAMUT_POW = 1
 const IM_GAMUT_LOG = 2
@@ -60,7 +60,7 @@ const IM_GAMUT_CROP = 9
 const IM_GAMUT_BRIGHTCONT = 10
 # end enum imToneGamut
 # begin enum imToneGamutFlags
-typealias imToneGamutFlags UInt32
+const imToneGamutFlags = UInt32
 const IM_GAMUT_MINMAX = 256
 # end enum imToneGamutFlags
 type imStats
