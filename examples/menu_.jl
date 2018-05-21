@@ -11,16 +11,16 @@ include("../src/libiup_h.jl")
 function menu()
 	IupOpen()	#Initializes IUP
 
-	item_open = IupItem ("Open", "");
+	item_open = IupItem("Open", "");
 	IupSetAttribute(item_open, "KEY", "O");
 
-	item_save = IupItem ("Save", "");
+	item_save = IupItem("Save", "");
 	IupSetAttribute(item_save, "KEY", "S");
 
-	item_undo = IupItem ("Undo", "");
+	item_undo = IupItem("Undo", "");
 	IupSetAttribute(item_undo, "KEY", "U");
 	IupSetAttribute(item_undo, "ACTIVE", "NO");
-	item_exit = IupItem ("Exit", "");
+	item_exit = IupItem("Exit", "");
 	IupSetAttribute(item_exit, "KEY", "x");
 	IupSetCallback(item_exit, "ACTION", cfunction(exit_cb, Cint, (Ptr{Ihandle},)))
 

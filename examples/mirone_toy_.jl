@@ -2,6 +2,9 @@ module mirone_toy_
 
 export
 	mirone_toy
+	
+include("../src/IUP_IM.jl")
+include("../src/IUP_CD.jl")
 
 using IUP
 using IUP_IM
@@ -234,7 +237,7 @@ function polygon(handles::Handles, what::Integer, x::Integer, y::Integer)
 		if (poly_lastwhat != CLOSE)
 			cdLine(handles.cd_canvas, line_seg.x1, line_seg.y1, line_seg.x2, line_seg.y2);        # apaga o ultimo segmento
 			# apaga o poligono temporario inteiro
-			for (i = 1:ctgc.num_points-1)
+			for i = 1:ctgc.num_points-1
 				cdCanvasLine(handles.cd_canvas, ctgc.points[i].x, ctgc.points[i].y, ctgc.points[i+1].x, ctgc.points[i+1].y);
 			end
 		end
@@ -459,19 +462,19 @@ end
 function CreateMainMenu()
 
 	# Creates items of menu File
-	item_new   = IupItem ("New","");
-	item_open  = IupItem ("Open Grid/Image", "");
-	item_close = IupItem ("Close", "");
-	item_exit  = IupItem ("Exit", "item_exit_act");
+	item_new   = IupItem("New","");
+	item_open  = IupItem("Open Grid/Image", "");
+	item_close = IupItem("Close", "");
+	item_exit  = IupItem("Exit", "item_exit_act");
 
 	# Creates items of menu Image
-	item_copy  = IupItem ("Copy", "");
-	item_paste = IupItem ("Paste", "")
+	item_copy  = IupItem("Copy", "");
+	item_paste = IupItem("Paste", "")
 
 	# Creates items for menu triangle
-	item_scalenus = IupItem ("Scalenus","")
-	item_isoceles = IupItem ("Isoceles", "")
-	item_equilateral = IupItem ("Equilateral", "")
+	item_scalenus = IupItem("Scalenus","")
+	item_isoceles = IupItem("Isoceles", "")
+	item_equilateral = IupItem("Equilateral", "")
 
 	# Create menu triangle
 	menu_triangle = IupMenu(item_equilateral, item_isoceles, item_scalenus)
@@ -480,49 +483,49 @@ function CreateMainMenu()
 	submenu_triangle = IupSubmenu("Triangle", menu_triangle)
 
 	# Creates items for menu create
-	item_line = IupItem ("Line", "")
-	item_circle = IupItem ("Circle", "")
+	item_line = IupItem("Line", "")
+	item_circle = IupItem("Circle", "")
 
 	# Creates menu create
 	menu_create = IupMenu(item_line, item_circle, submenu_triangle)
 
 	# Creates submenu create
-	submenu_create = IupSubmenu ("Create", menu_create)
+	submenu_create = IupSubmenu("Create", menu_create)
 
 	# Creates items of menu help
-	item_help = IupItem ("Help", "item_help_act")
+	item_help = IupItem("Help", "item_help_act")
   
 	# Creates menus
-	menu_file  = IupMenu (item_new, item_open, item_close, IupSeparator(), item_exit)
-	menu_image = IupMenu (item_copy, item_paste, IupSeparator(), submenu_create)
-	menu_tools = IupMenu (IupItem("Tools",""))
-	menu_help  = IupMenu (item_help);
+	menu_file  = IupMenu(item_new, item_open, item_close, IupSeparator(), item_exit)
+	menu_image = IupMenu(item_copy, item_paste, IupSeparator(), submenu_create)
+	menu_tools = IupMenu(IupItem("Tools",""))
+	menu_help  = IupMenu(item_help);
 
 	# Creates submenus
-	submenu_file  = IupSubmenu ("File", menu_file)
-	submenu_image = IupSubmenu ("Image", menu_image)
-	submenu_tools = IupSubmenu ("Tools", menu_tools)
-	submenu_help  = IupSubmenu ("Help", menu_help)
+	submenu_file  = IupSubmenu("File", menu_file)
+	submenu_image = IupSubmenu("Image", menu_image)
+	submenu_tools = IupSubmenu("Tools", menu_tools)
+	submenu_help  = IupSubmenu("Help", menu_help)
 
 	# The menu Draw and its descendents
 	menu_draw = IupMenu(IupItem("Draw",""))
-	submenu_draw = IupSubmenu ("Draw", menu_draw)
+	submenu_draw = IupSubmenu("Draw", menu_draw)
 
 	# The menu Geography and its descendents
 	menu_geog = IupMenu(IupItem("Plot-coastline",""))
-	submenu_geog = IupSubmenu ("Geography", menu_geog)
+	submenu_geog = IupSubmenu("Geography", menu_geog)
 
 	# The menu Plates and its descendents
 	menu_plates = IupMenu(IupItem("Plate calculator",""))
-	submenu_plates = IupSubmenu ("Plates", menu_plates)
+	submenu_plates = IupSubmenu("Plates", menu_plates)
 
 	# The menu Mag/Grav and its descendents
 	menu_mag = IupMenu(IupItem("IGRF calculator",""))
-	submenu_mag = IupSubmenu ("Mag/Grav", menu_mag)
+	submenu_mag = IupSubmenu("Mag/Grav", menu_mag)
 
 	# The menu Seismology and its descendents
 	menu_seismic = IupMenu(IupItem("Seismicity",""))
-	submenu_seismic = IupSubmenu ("Seismology", menu_seismic)
+	submenu_seismic = IupSubmenu("Seismology", menu_seismic)
 
 	# The menu Tsunamis and its descendents
 	menu_tsu = IupMenu(IupItem("Tsunami Travel Time",""))

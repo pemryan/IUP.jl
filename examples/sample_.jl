@@ -38,20 +38,20 @@ end
 function SampleTest()
 
 	#img = IupImage(32,32, img_bits1)
-	#IupSetHandle ("img1", img)
-	# IupSetAttribute (img, "0", "0 0 0")
-	# IupSetAttribute (img, "1", "BGCOLOR")
-	# IupSetAttribute (img, "2", "255 0 0")
+	#IupSetHandle("img1", img)
+	# IupSetAttribute(img, "0", "0 0 0")
+	# IupSetAttribute(img, "1", "BGCOLOR")
+	# IupSetAttribute(img, "2", "255 0 0")
 
 	img = load_image_Tecgraf()
-	IupSetHandle ("img1", img)
+	IupSetHandle("img1", img)
 
 	img = IupImage(32,32, pointer(img_bits2()))
-	IupSetHandle ("img2", img)
-	IupSetAttribute (img, "0", "0 0 0")
-	IupSetAttribute (img, "1", "0 255 0")
-	IupSetAttribute (img, "2", "BGCOLOR")
-	IupSetAttribute (img, "3", "255 0 0")
+	IupSetHandle("img2", img)
+	IupSetAttribute(img, "0", "0 0 0")
+	IupSetAttribute(img, "1", "0 255 0")
+	IupSetAttribute(img, "2", "BGCOLOR")
+	IupSetAttribute(img, "3", "255 0 0")
 
 	mnu = IupMenu(
 		IupSubmenu("IupSubmenu 1",

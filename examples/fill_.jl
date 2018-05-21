@@ -22,14 +22,14 @@ function fill()
 
 	# Creates frame with centered button
 	frame_center = IupFrame(
-		IupHbox(IupFill (), IupButton ("Ok", ""), IupFill ())
+		IupHbox(IupFill(), IupButton("Ok", ""), IupFill())
 	)
 
 	# Sets frame's title
 	IupSetAttribute(frame_center, "TITLE", "Centered")
 
 	# Creates frame with right aligned button
-	frame_right = IupFrame(IupHbox(IupFill (),IupButton("Ok", "")))
+	frame_right = IupFrame(IupHbox(IupFill(),IupButton("Ok", "")))
 
 	# Sets frame's title
 	IupSetAttribute(frame_right, "TITLE", "Right aligned")

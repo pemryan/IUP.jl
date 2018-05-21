@@ -19,7 +19,7 @@ const RGB = 12
 const META = 13
 # end enum ANONYMOUS_1
 # begin enum tPrim
-const tPrim = Uint32
+const tPrim = UInt32
 # begin enum ANONYMOUS_2
 const BACKGROUND = 0
 const FOREGROUND = 1
@@ -37,7 +37,7 @@ const CENTER = 3
 const REPAINT = 4
 # end enum ANONYMOUS_4
 # begin enum tBoolean
-const tBoolean = Uint32
+const tBoolean = UInt32
 # end enum tBoolean
 type tPoint
     x::Cint
@@ -125,14 +125,16 @@ type tPoly
     num_points::Cint
     points::Ptr{tPoint}
 end
+
 type tnode
     _type::tPrim
-    par::Union(tLB, tAS, tPoly, tPixel, tMark, tText, tMeta)
+    par::Union{tLB, tAS, tPoly, tPixel, tMark, tText, tMeta}
     next::Ptr{tnode}
 end
+
 type tList
     _type::tPrim
-    par::Union(tLB, tAS, tPoly, tPixel, tMark, tText, tMeta)
+    par::Union{tLB, tAS, tPoly, tPixel, tMark, tText, tMeta}
     next::Ptr{tnode}
 end
 immutable Array_100_Cuchar

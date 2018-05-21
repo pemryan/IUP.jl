@@ -17,7 +17,7 @@ function frame()
 	# Creates frame with a label
 	thisframe = IupFrame(
 				IupHbox(IupFill(),
-					IupLabel ("IupFrame Attributes:\nFGCOLOR = \"255 0 0\"\nSIZE = \"EIGHTHxEIGHTH\"\nTITLE = \"This is the frame\"\nMARGIN = \"10x10\""),
+					IupLabel("IupFrame Attributes:\nFGCOLOR = \"255 0 0\"\nSIZE = \"EIGHTHxEIGHTH\"\nTITLE = \"This is the frame\"\nMARGIN = \"10x10\""),
 					IupFill(),
  				)
 			)

@@ -14,7 +14,7 @@ function backgroundbox()
 	btn = IupBackgroundBox(IupVbox(IupButton("This button does nothing"), IupText(), C_NULL))
 
 	# Creates dialog
-	dlg = IupDialog(IupVbox (btn, C_NULL));
+	dlg = IupDialog(IupVbox(btn, C_NULL));
 
 	IupSetAttributes(dlg, "MARGIN=10x10, GAP=10, TITLE = \"IupBackgroundBox Example\"");
 	IupShowXY(dlg, IUP_CENTER, IUP_CENTER)

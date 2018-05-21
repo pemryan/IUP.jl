@@ -46,7 +46,7 @@ function k_any(self::Ptr{Ihandle}, c::Cint)
 	return IUP_CONTINUE
 end
 
-function number_action (self::Ptr{Ihandle}, c::Cint)
+function number_action(self::Ptr{Ihandle}, c::Cint)
 	caracteres_validos = "0123456789.+-Ee"
 
 	if ((search(caracteres_validos, char(c))) > 0)     # c is a valid character

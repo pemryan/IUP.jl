@@ -14,9 +14,9 @@ function alarm()
 	if (r == 1)
 		IupMessage("Save file", "File saved successfully - leaving program")
 	elseif (r == 2)
-		IupMessage ("Save file", "File not saved - leaving program anyway")
+		IupMessage("Save file", "File not saved - leaving program anyway")
 	elseif (r == 3)
-		IupMessage ("Save file", "Operation canceled")
+		IupMessage("Save file", "Operation canceled")
 	end
 	IupClose()
 end

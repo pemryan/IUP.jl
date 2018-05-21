@@ -27,19 +27,19 @@ function cbox()
 end
 
 # -----------------------------------------------------------------------------------------
-function func_1 ()
+function func_1()
 	img = IupImage(32,32, img_bits1())
-	IupSetHandle ("img1", img)
-	IupSetAttribute (img, "0", "0 0 0")
-	IupSetAttribute (img, "1", "BGCOLOR")
-	IupSetAttribute (img, "2", "255 0 0")
+	IupSetHandle("img1", img)
+	IupSetAttribute(img, "0", "0 0 0")
+	IupSetAttribute(img, "1", "BGCOLOR")
+	IupSetAttribute(img, "2", "255 0 0")
 
 	img = IupImage(32,32, img_bits2())
-	IupSetHandle ("img2", img)
-	IupSetAttribute (img, "0", "0 0 0")
-	IupSetAttribute (img, "1", "0 255 0")
-	IupSetAttribute (img, "2", "BGCOLOR")
-	IupSetAttribute (img, "3", "255 0 0")
+	IupSetHandle("img2", img)
+	IupSetAttribute(img, "0", "0 0 0")
+	IupSetAttribute(img, "1", "0 255 0")
+	IupSetAttribute(img, "2", "BGCOLOR")
+	IupSetAttribute(img, "3", "255 0 0")
 
 	_frm_1 = IupFrame(
 				IupVbox(

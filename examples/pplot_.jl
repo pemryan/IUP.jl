@@ -51,7 +51,7 @@ global tabs
 	#  cdInitGdiPlus();
 
 	# create plots
-	for (ii = 1:MAXPLOT)
+	for ii = 1:MAXPLOT
 		plot[ii] = IupPlot()
 	end
 
@@ -139,7 +139,7 @@ global tabs
 	IupSetAttribute(vboxl, "EXPAND", "NO");
 
 	# right panel: tabs with plots
-	for (ii = 1:MAXPLOT)
+	for ii = 1:MAXPLOT
 		vboxr[ii] = IupVbox(plot[ii]); # each plot a tab
 		s = @sprintf("Plot %d", ii)
 		IupSetAttribute(vboxr[ii], "TABTITLE", s); # name each tab
@@ -249,7 +249,7 @@ function InitPlots()
 
 	theFac = 1.0 / (100*100*100)
 	IupPlotBegin(plot[1], 0);
-	for (theI = -100:100)
+	for theI = -100:100
 		x = float64(theI+50);
 		y = theFac*theI*theI*theI;
 		IupPlotAdd(plot[1], x, y)
@@ -260,7 +260,7 @@ function InitPlots()
 
 	theFac = 2.0/100;
 	IupPlotBegin(plot[1], 0);
-	for (theI = -100:100)
+	for theI = -100:100
 		x = float64(theI)
 		y = -theFac*theI;
 		IupPlotAdd(plot[1], x, y);
@@ -269,7 +269,7 @@ function InitPlots()
 	IupSetAttribute(plot[1], "DS_LEGEND", "Curve 1");
 
 	IupPlotBegin(plot[1], 0);
-	for (theI = -100:100)
+	for theI = -100:100
 		x = (0.01*theI*theI-30);
 		y = 0.01*theI;
 		IupPlotAdd(plot[1], x, y);
@@ -306,7 +306,7 @@ function InitPlots()
 
 	theFac = 1.0/(100*100*100);
 	IupPlotBegin(plot[2], 0);
-	for (theI = 0:100)
+	for theI = 0:100
 		x = float64(theI);
 		y = theFac*theI*theI*theI;
 		IupPlotAdd(plot[2], x, y);
@@ -315,7 +315,7 @@ function InitPlots()
 
 	theFac = 2.0/100;
 	IupPlotBegin(plot[2], 0);
-	for (theI = 0:100)
+	for theI = 0:100
 		x = float64(theI);
 		y = -theFac*theI;
 		IupPlotAdd(plot[2], x, y);
@@ -338,7 +338,7 @@ function InitPlots()
 
 	theFac = 100.0/(100*100*100);
 	IupPlotBegin(plot[3], 0);
-	for (theI = 0:100)
+	for theI = 0:100
 		x = (0.0001+theI*0.001);
 		y = (0.01+theFac*theI*theI*theI);
 		IupPlotAdd(plot[3], x, y);
@@ -356,7 +356,7 @@ function InitPlots()
 	kData = [1,2,3,4,5,6,7,8,9,0,1,2]
 
 	IupPlotBegin(plot[4], 1);
-	for (theI = 1:12)
+	for theI = 1:12
 		IupPlotAddStr(plot[4], kLables[theI], float64(kData[theI]))
 	end
 	IupPlotEnd(plot[4]);
@@ -385,7 +385,7 @@ function InitPlots()
 
 	theFac = 100.0/(100*100*100);
 	IupPlotBegin(plot[5], 0);
-	for (theI = 0:10)
+	for theI = 0:10
 		x = (0.0001+theI*0.001);
 		y = (0.01+theFac*theI*theI);
 		IupPlotAdd(plot[5], x, y);
@@ -395,7 +395,7 @@ function InitPlots()
 	IupSetAttribute(plot[5], "DS_SHOWVALUES", "YES");
 
 	IupPlotBegin(plot[5], 0);
-	for (theI = 0:10)
+	for theI = 0:10
 		x = (0.0001+theI*0.001);
 		y = (0.2-theFac*theI*theI);
 		IupPlotAdd(plot[5], x, y);
@@ -411,7 +411,7 @@ function InitPlots()
 
 	theFac = 100.0/(100*100*100);
 	IupPlotBegin(plot[6], 0);
-	for (theI = -10:10)
+	for theI = -10:10
 		x = (0.001*theI);
 		y = (0.01+theFac*theI*theI*theI);
 		IupPlotAdd(plot[6], x, y);

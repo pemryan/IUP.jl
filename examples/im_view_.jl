@@ -198,9 +198,9 @@ end
 
 # ---------------------------------------------------------------------------------------------
 function CreateMainMenu()
-	item_help = IupItem ("Help", "item_help_act")
-	menu_help  = IupMenu (item_help);
-	submenu_help  = IupSubmenu ("Help", menu_help)
+	item_help = IupItem("Help", "item_help_act")
+	menu_help  = IupMenu(item_help);
+	submenu_help  = IupSubmenu("Help", menu_help)
 
 	# Creates main menu with file menu
 	mainMenu = IupMenu(submenu_help)
