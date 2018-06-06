@@ -7,49 +7,49 @@ const IUP_PRIMARY = -1
 const IUP_SECONDARY = -2
 
 function IupControlsOpen()
-	ccall((:IupControlsOpen, libiupcontrols_), Cint, (),)
+    ccall((:IupControlsOpen, libiupcontrols_), Cint, (),)
 end
 function IupControlsClose()
-	ccall((:IupControlsClose, libiupcontrols_), Void, (),)
+    ccall((:IupControlsClose, libiupcontrols_), Void, (),)
 end
 function IupColorbar()
-	ccall((:IupColorbar, libiupcontrols_), Ptr{Cint}, (),)
+    ccall((:IupColorbar, libiupcontrols_), Ptr{Cint}, (),)
 end
 function IupCells()
-	ccall((:IupCells, libiupcontrols_), Ptr{Cint}, (),)
+    ccall((:IupCells, libiupcontrols_), Ptr{Cint}, (),)
 end
 function IupColorBrowser()
-	ccall((:IupColorBrowser, libiupcontrols_), Ptr{Cint}, (),)
+    ccall((:IupColorBrowser, libiupcontrols_), Ptr{Cint}, (),)
 end
 function IupGauge()
-	ccall((:IupGauge, libiupcontrols_), Ptr{Cint}, (),)
+    ccall((:IupGauge, libiupcontrols_), Ptr{Cint}, (),)
 end
 function IupDial(orient::String="")
-	ccall((:IupDial, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), orient)
+    ccall((:IupDial, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), orient)
 end
 function IupMatrix(action::String="")
-	ccall((:IupMatrix, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), action)
+    ccall((:IupMatrix, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), action)
 end
 function IupMatrix(action::Ptr{Void})
-	ccall((:IupMatrix, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), action)
+    ccall((:IupMatrix, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), action)
 end
 function IupMatrixList()
-	ccall((:IupMatrixList, libiupcontrols_), Ptr{Ihandle}, (),)
+    ccall((:IupMatrixList, libiupcontrols_), Ptr{Ihandle}, (),)
 end
 # DEPRECATED
 function IupMatSetAttribute(ih::Ptr{Int}, name::String, lin::Int, col::Int, value::String)
-	ccall((:IupMatSetAttribute, libiupcontrols_), Void, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint, Ptr{UInt8}), ih, name, lin, col, value)
+    ccall((:IupMatSetAttribute, libiupcontrols_), Void, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint, Ptr{UInt8}), ih, name, lin, col, value)
 end
 function IupMatStoreAttribute(ih::Ptr{Int}, name::String, lin::Int, col::Int, value::String)
-	ccall((:IupMatStoreAttribute, libiupcontrols_), Void, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint, Ptr{UInt8}), ih, name, lin, col, value)
+    ccall((:IupMatStoreAttribute, libiupcontrols_), Void, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint, Ptr{UInt8}), ih, name, lin, col, value)
 end
 function IupMatGetAttribute(ih::Ptr{Int}, name::String, lin::Int, col::Int)
-	ccall((:IupMatGetAttribute, libiupcontrols_), Ptr{UInt8}, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
+    ccall((:IupMatGetAttribute, libiupcontrols_), Ptr{UInt8}, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
 end
 function IupMatGetInt(ih::Ptr{Int}, name::String, lin::Int, col::Int)
-	ccall((:IupMatGetInt, libiupcontrols_), Cint, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
+    ccall((:IupMatGetInt, libiupcontrols_), Cint, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
 end
 function IupMatGetFloat(ih::Ptr{Int}, name::String, lin::Int, col::Int)
-	ccall((:IupMatGetFloat, libiupcontrols_), Cfloat, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
+    ccall((:IupMatGetFloat, libiupcontrols_), Cfloat, (Ptr{Cint}, Ptr{UInt8}, Cint, Cint), ih, name, lin, col)
 end
 

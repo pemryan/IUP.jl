@@ -585,7 +585,7 @@ cnvWDCanvas = CANVAS[BORDER=NO](cmdWDRepaint)
 dlgWDCanvas = DIALOG
 [
  TITLE = "WD Canvas",
- CLISE_CB =	cmdCloseWD,
+ CLISE_CB =    cmdCloseWD,
  SIZE = 200x200,
  PARENTDIALOG="dlgMain",
  GAP=5x5
@@ -596,7 +596,7 @@ cnvPICCanvas = CANVAS[BORDER=NO](cmdPICRepaint)
 dlgPICCanvas = DIALOG
 [
  TITLE = "PIC Canvas",
- CLISE_CB =	cmdClosePIC,
+ CLISE_CB =    cmdClosePIC,
  SIZE = 200x200,
  PARENTDIALOG="dlgMain",
  GAP=5x5

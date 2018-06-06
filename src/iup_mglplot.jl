@@ -3,6 +3,12 @@
 
 @static is_windows()? (const libiup_mglplot_ = "iup_mglplot") : (const libiup_mglplot_ = "libiup_mglplot")  # Name of shared lib.
 
+export IupMglPlotOpen, IupMglPlot, IupMglPlotBegin, IupMglPlotAdd1D, IupMglPlotAdd2D, IupMglPlotAdd3D, 
+IupMglPlotEnd, IupMglPlotNewDataSet, IupMglPlotInsert1D, IupMglPlotInsert2D, IupMglPlotInsert3D,
+IupMglPlotSet1D, IupMglPlotSet2D, IupMglPlotSet3D, 
+IupMglPlotSetFormula, IupMglPlotSetData, IupMglPlotLoadData, 
+IupMglPlotSetFromFormula, IupMglPlotTransform, IupMglPlotTransformXYZ, IupMglPlotDrawMark, 
+IupMglPlotDrawLine, IupMglPlotDrawText, IupMglPlotPaintTo
 
 function IupMglPlotOpen()
   ccall( (:IupMglPlotOpen, libiup_mglplot_), Void, (), )
@@ -73,7 +79,8 @@ end
 function IupMglPlotDrawText(ih::Ptr{Ihandle}, text::String, x, y, z)
   ccall( (:IupMglPlotDrawText, libiup_mglplot_), Void, (Ptr{Ihandle}, Ptr{UInt8}, Cfloat, Cfloat, Cfloat), ih, text, x, y, z)
 end
-function IupMglPlotPaintTo(ih::Ptr{Ihandle}, format::String, w::Int, h::Int, dpi::Cfloat, data::Ptr{Void})
-  ccall( (:IupMglPlotPaintTo, libiup_mglplot_), Void, (Ptr{Ihandle}, Ptr{UInt8}, Cint, Cint, Cfloat, Ptr{Void}), ih, format, w, h, dpi, data)
+# void IupMglPlotPaintTo(Ihandle* ih, const char* format, int w, int h, double dpi, void* data); 
+function IupMglPlotPaintTo(ih::Ptr{Ihandle}, format::String, w::Int, h::Int, dpi::Int, data::String)
+  ccall( (:IupMglPlotPaintTo, libiup_mglplot_), Void, (Ptr{Ihandle}, Ptr{UInt8}, Cint, Cint, Cfloat, Ptr{UInt8}), ih, format, w, h, Cfloat(dpi), data)
 end
 

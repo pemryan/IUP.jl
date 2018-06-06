@@ -6,43 +6,43 @@ module fill_
 using IUP
 
 export
-	fill
+    fill
 
 #------------------------example html/examples/C/fill.c ----------------------------------
 function fill()
-	IupOpen()	#Initializes IUP
+    IupOpen()    #Initializes IUP
 
-	# Creates frame with left aligned button */
-	frame_left = IupFrame(
-		IupHbox(IupButton("Ok" , ""), IupFill())
-	)
+    # Creates frame with left aligned button */
+    frame_left = IupFrame(
+        IupHbox(IupButton("Ok" , ""), IupFill())
+    )
 
-	# Sets frame's title */
-	IupSetAttribute( frame_left, "TITLE", "Left aligned" );
+    # Sets frame's title */
+    IupSetAttribute( frame_left, "TITLE", "Left aligned" );
 
-	# Creates frame with centered button
-	frame_center = IupFrame(
-		IupHbox(IupFill(), IupButton("Ok", ""), IupFill())
-	)
+    # Creates frame with centered button
+    frame_center = IupFrame(
+        IupHbox(IupFill(), IupButton("Ok", ""), IupFill())
+    )
 
-	# Sets frame's title
-	IupSetAttribute(frame_center, "TITLE", "Centered")
+    # Sets frame's title
+    IupSetAttribute(frame_center, "TITLE", "Centered")
 
-	# Creates frame with right aligned button
-	frame_right = IupFrame(IupHbox(IupFill(),IupButton("Ok", "")))
+    # Creates frame with right aligned button
+    frame_right = IupFrame(IupHbox(IupFill(),IupButton("Ok", "")))
 
-	# Sets frame's title
-	IupSetAttribute(frame_right, "TITLE", "Right aligned")
+    # Sets frame's title
+    IupSetAttribute(frame_right, "TITLE", "Right aligned")
 
-	# Creates dialog with these three frames
-	dialog = IupDialog(IupVbox(frame_left, frame_center, frame_right))
+    # Creates dialog with these three frames
+    dialog = IupDialog(IupVbox(frame_left, frame_center, frame_right))
 
-	# Sets dialog's size and title
-	IupSetAttributes(dialog, "SIZE=120, TITLE=IupFill")
+    # Sets dialog's size and title
+    IupSetAttributes(dialog, "SIZE=120, TITLE=IupFill")
 
-	IupShow(dialog)                    # Shows dialog in the center of the screen
-	IupMainLoop()                      # Initializes IUP main loop
-	IupClose()                         # And close it when ready
+    IupShow(dialog)                    # Shows dialog in the center of the screen
+    IupMainLoop()                      # Initializes IUP main loop
+    IupClose()                         # And close it when ready
 end
 
-end		# module
+end        # module
