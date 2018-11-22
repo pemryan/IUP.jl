@@ -5,14 +5,15 @@ using IUP
 export
   cdtest
 
+include("../examples/cdtest_h.jl")
+
 type tCTC_l
     iup_canvas::Ptr{cdCanvas}
 end
 
 global antialias = 1
 
-global ctgc = tCTC(
-        C_NULL,
+global ctgc = tCTC(C_NULL,
         Int32(0), Int32(0), 0.0, Int32(0),
         C_NULL,
         Int32(0),
@@ -170,8 +171,8 @@ h = unsafe_load(h)
     #ctgc.test_image = C_NULL;
     #ctgc.sim = 0;
     ctgc.stretch_play = 1;
-    ctgc.dlg_x = IUP_CENTER;
-    ctgc.dlg_y = IUP_CENTER;
+    ctgc.dlg_x = IUP.IUP_CENTER;
+    ctgc.dlg_y = IUP.IUP_CENTER;
     #ctgc.visible = 0;
 
     # inicializa os vetores stipple e pattern */
@@ -220,11 +221,11 @@ h = unsafe_load(h)
     #ctgc.num_points = Cint(0)
 
     # a lista de primitivas jah estah vazia, nao hah o que apagar */
-    IupSetAttribute(IupGetHandle("itEditUndo"), IUP_ACTIVE, IUP_NO);
+    IupSetAttribute(IupGetHandle("itEditUndo"), IUP.IUP.IUP_ACTIVE, IUP.IUP_NO);
 
     # atualiza o tamanho do canvas em pixels na barra de titulo */
     #s = @sprintf(ctgc.title, "CDTest 5.3 (%dx%d - %dbpp)", ctgc.w, ctgc.h, ctgc.bpp)
-    #IupSetAttribute(IupGetHandle("dlgMain"), IUP_TITLE, ctgc.title);
+    #IupSetAttribute(IupGetHandle("dlgMain"),IUP.IUP_TITLE, ctgc.title);
 
     # inicializa a barra de status */
     #s = @sprintf(ctgc.status_line, "LEFT click and drag.");
@@ -333,7 +334,7 @@ end
 
 # Show About window
 function fHelpAbout()
-    IupSetAttribute(IupGetHandle("lblVersion"), IUP_TITLE, cdVersion())
+    IupSetAttribute(IupGetHandle("lblVersion"),IUP.IUP_TITLE, cdVersion())
     IupShow(IupGetHandle("dlgHelpAbout"))
     return IUP_DEFAULT
 end
@@ -344,20 +345,20 @@ end
 function fLine(self::Ptr{Ihandle})
 @show("MERDA_fLine")
     if (ctgc.cur_prim != LINE)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgLine");
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgLine");
         if (ctgc.cur_prim == POLY)    # termina o poligono em andamento */
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL, IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = LINE;
         ctgc.following = 0;
         ctgc.visible = iscurvisible();
         IupHide(ctgc.dlg_cur_prim);      # esconde o dialogo anterior */
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X);
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y);
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X);
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y);
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgLB");
-        IupSetAttribute(ctgc.dlg_cur_prim, IUP_TITLE, "Line Parameters");
+        IupSetAttribute(ctgc.dlg_cur_prim, IUP.IUP_TITLE, "Line Parameters");
     end
     #sprintf(ctgc.status_line, "LEFT click and drag.");
     #set_status();
@@ -370,14 +371,14 @@ end
 # --------------------------------------------------------------------------
 function fPoly(self::Ptr{Ihandle})
     if (ctgc.cur_prim != POLY)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgPoly");
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgPoly");
         ctgc.cur_prim = POLY;
         ctgc.following = 0
         ctgc.visible = iscurvisible()
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X);
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y);
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X);
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y);
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgPoly");
         # zera o buffer temporario de pontos
@@ -396,20 +397,20 @@ end
 #-------------------------------------------------------------------------*/
 function fRect(self::Ptr{Ihandle})
     if (ctgc.cur_prim != RECT)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgRect")
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgRect")
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL, IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = RECT;
         ctgc.following = 0;
         ctgc.visible = iscurvisible();
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X);
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y);
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X);
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y);
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgLB");
-        IupSetAttribute(ctgc.dlg_cur_prim, IUP_TITLE, "Rect Parameters");
+        IupSetAttribute(ctgc.dlg_cur_prim, IUP.IUP_TITLE, "Rect Parameters");
     end
     #sprintf(ctgc.status_line, "LEFT click and drag.");
     #set_status();
@@ -422,20 +423,20 @@ end
 # --------------------------------------------------------------------------
 function fBox(self::Ptr{Ihandle})
     if (ctgc.cur_prim != BOX)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgBox")
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgBox")
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL, IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = BOX;
         ctgc.following = 0;
         ctgc.visible = iscurvisible();
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X)
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y)
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X)
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y)
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgLB");
-        IupSetAttribute(ctgc.dlg_cur_prim, IUP_TITLE, "Box Parameters");
+        IupSetAttribute(ctgc.dlg_cur_prim, IUP.IUP_TITLE, "Box Parameters");
     end
     #sprintf(ctgc.status_line, "LEFT click and drag.");
     #set_status();
@@ -448,20 +449,20 @@ end
 # --------------------------------------------------------------------------
 function fArc(self::Ptr{Ihandle})
     if (ctgc.cur_prim != ARC)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgArc");
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgArc");
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL, IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = ARC
         ctgc.following = 0
         ctgc.visible = iscurvisible();
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X);
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y);
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X);
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y);
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgAS");
-        IupSetAttribute(ctgc.dlg_cur_prim, IUP_TITLE, "Arc Parameters");
+        IupSetAttribute(ctgc.dlg_cur_prim, IUP.IUP_TITLE, "Arc Parameters");
     end
     #sprintf(ctgc.status_line, "LEFT click at center and drag.");
     #set_status();
@@ -475,20 +476,20 @@ end
 function fSector(self::Ptr{Ihandle})
 
     if (ctgc.cur_prim != SECTOR)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgSector");
+        IupSetAttribute(ctgc.bt_cur_prim, IUP.IUP_IMAGE, "imgSector");
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL,IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = SECTOR
         ctgc.following = 0
         ctgc.visible = iscurvisible()
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X)
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y)
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X)
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y)
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgAS");
-        IupSetAttribute(ctgc.dlg_cur_prim, IUP_TITLE, "Sector Parameters");
+        IupSetAttribute(ctgc.dlg_cur_prim,IUP.IUP_TITLE, "Sector Parameters");
     end
     #sprintf(ctgc.status_line, "LEFT click at center and drag.");
     #set_status();
@@ -502,17 +503,17 @@ end
 function fText(self::Ptr{Ihandle})
 
     if (ctgc.cur_prim != TEXT)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgText");
+        IupSetAttribute(ctgc.bt_cur_prim,IUP.IUP_IMAGE, "imgText");
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0);
+            fButtonCB(C_NULL,IUP.IUP_BUTTON3, 0, 0, 0, 0);
         end
         ctgc.cur_prim = TEXT;
         ctgc.following = false;
         ctgc.visible = iscurvisible();
         IupHide(ctgc.dlg_cur_prim);
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X);
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y);
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X);
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y);
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgText");
     end
@@ -528,17 +529,17 @@ end
 function fMark(self::Ptr{Ihandle})
 
     if (ctgc.cur_prim != MARK)
-        IupSetAttribute(ctgc.bt_cur_prim, IUP_IMAGE, "imgMark")
+        IupSetAttribute(ctgc.bt_cur_prim,IUP.IUP_IMAGE, "imgMark")
         if (ctgc.cur_prim == POLY)
-            fButtonCB(C_NULL, IUP_BUTTON3, 0, 0, 0, 0)
+            fButtonCB(C_NULL,IUP.IUP_BUTTON3, 0, 0, 0, 0)
         end
         ctgc.cur_prim = MARK
         ctgc.following = false
         ctgc.visible = iscurvisible()
         IupHide(ctgc.dlg_cur_prim)
         if (ctgc.visible != 0)
-            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP_X)
-            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP_Y)
+            ctgc.dlg_x = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_X)
+            ctgc.dlg_y = IupGetInt(ctgc.dlg_cur_prim, IUP.IUP_Y)
         end
         ctgc.dlg_cur_prim = IupGetHandle("dlgMark")
     end
@@ -556,26 +557,26 @@ end
 function fDraw()
     # atualiza os dados entrados na caixa de dialogo no contexto da primitiva corrente
     if (ctgc.cur_prim == LINE)
-        line_pos.x1 = IupGetInt(IupGetHandle("txtLBX1"), IUP_VALUE)
-        line_pos.x2 = IupGetInt(IupGetHandle("txtLBX2"), IUP_VALUE)
-        line_pos.y1 = IupGetInt(IupGetHandle("txtLBY1"), IUP_VALUE)
-        line_pos.y2 = IupGetInt(IupGetHandle("txtLBY2"), IUP_VALUE)
+        line_pos.x1 = IupGetInt(IupGetHandle("txtLBX1"), IUP.IUP_VALUE)
+        line_pos.x2 = IupGetInt(IupGetHandle("txtLBX2"), IUP.IUP_VALUE)
+        line_pos.y1 = IupGetInt(IupGetHandle("txtLBY1"), IUP.IUP_VALUE)
+        line_pos.y2 = IupGetInt(IupGetHandle("txtLBY2"), IUP.IUP_VALUE)
     elseif (ctgc.cur_prim == RECT || ctgc.cur_prim == BOX)
-        box_pos.xmin = IupGetInt(IupGetHandle("txtLBX1"), IUP_VALUE)
-        box_pos.xmax = IupGetInt(IupGetHandle("txtLBX2"), IUP_VALUE)
-        box_pos.ymin = IupGetInt(IupGetHandle("txtLBY1"), IUP_VALUE)
-        box_pos.ymax = IupGetInt(IupGetHandle("txtLBY2"), IUP_VALUE)
+        box_pos.xmin = IupGetInt(IupGetHandle("txtLBX1"), IUP.IUP_VALUE)
+        box_pos.xmax = IupGetInt(IupGetHandle("txtLBX2"), IUP.IUP_VALUE)
+        box_pos.ymin = IupGetInt(IupGetHandle("txtLBY1"), IUP.IUP_VALUE)
+        box_pos.ymax = IupGetInt(IupGetHandle("txtLBY2"), IUP.IUP_VALUE)
     elseif (ctgc.cur_prim == ARC || ctgc.cur_prim == SECTOR || ctgc.cur_prim == CHORD)
-        arc_pos.xc = IupGetInt(IupGetHandle("txtASXC"), IUP_VALUE)
-        arc_pos.yc = IupGetInt(IupGetHandle("txtASYC"), IUP_VALUE)
-        arc_pos.w = IupGetInt(IupGetHandle("txtASW"), IUP_VALUE)
-        arc_pos.h = IupGetInt(IupGetHandle("txtASH"), IUP_VALUE)
+        arc_pos.xc = IupGetInt(IupGetHandle("txtASXC"), IUP.IUP_VALUE)
+        arc_pos.yc = IupGetInt(IupGetHandle("txtASYC"), IUP.IUP_VALUE)
+        arc_pos.w = IupGetInt(IupGetHandle("txtASW"), IUP.IUP_VALUE)
+        arc_pos.h = IupGetInt(IupGetHandle("txtASH"), IUP.IUP_VALUE)
     elseif (ctgc.cur_prim == PIXEL)
-        pixel_pos.x = IupGetInt(IupGetHandle("txtPixelX"), IUP_VALUE)
-        pixel_pos.y = IupGetInt(IupGetHandle("txtPixelY"), IUP_VALUE)
+        pixel_pos.x = IupGetInt(IupGetHandle("txtPixelX"), IUP.IUP_VALUE)
+        pixel_pos.y = IupGetInt(IupGetHandle("txtPixelY"), IUP.IUP_VALUE)
     elseif (ctgc.cur_prim == MARK)
-        mark_pos.x = IupGetInt(IupGetHandle("txtMarkX"), IUP_VALUE)
-        mark_pos.y = IupGetInt(IupGetHandle("txtMarkY"), IUP_VALUE)
+        mark_pos.x = IupGetInt(IupGetHandle("txtMarkX"), IUP.IUP_VALUE)
+        mark_pos.y = IupGetInt(IupGetHandle("txtMarkY"), IUP.IUP_VALUE)
     end
 
     # efetivamente desenha a primitiva
@@ -603,7 +604,7 @@ function fButtonCB(self::Ptr{Ihandle}, b::Char, e::Integer, x::Integer, y::Integ
     x = Int32(x)                # <=========== NAO DEVIA SER Int64
     mouse_pos(x, y)
 
-    if (b == IUP_BUTTON1)
+    if (b == IUP.IUP_BUTTON1)
         if (e != 0)
             if (ctgc.cur_prim == LINE)
                 follow(x, y)
@@ -670,7 +671,7 @@ function fButtonCB(self::Ptr{Ihandle}, b::Char, e::Integer, x::Integer, y::Integ
                 ctgc.following = 1;
              end
          end
-    elseif (b == IUP_BUTTON3)
+    elseif (b == IUP.IUP_BUTTON3)
         if (e != 0)
             if (ctgc.cur_prim == IMAGE)
             elseif (ctgc.cur_prim == RGB)
@@ -693,7 +694,7 @@ end
 
 # ------------------------------------------------------------------------
 function iscurvisible()
-    vis = IupGetAttribute(ctgc.dlg_cur_prim, IUP_VISIBLE)
+    vis = IupGetAttribute(ctgc.dlg_cur_prim, IUP.IUP_VISIBLE)
     if (vis == C_NULL)
         return 0
     end
@@ -760,8 +761,8 @@ function follow(x::Integer, y::Integer)
         # atualiza a caixa de dialogo */
         fl_mx = @sprintf("%d", x);
         fl_my = @sprintf("%d", y);
-        IupSetAttribute(IupGetHandle("txtPixelX"), IUP_VALUE, fl_mx);
-        IupSetAttribute(IupGetHandle("txtPixelY"), IUP_VALUE, fl_my);
+        IupSetAttribute(IupGetHandle("txtPixelX"), IUP.IUP_VALUE, fl_mx);
+        IupSetAttribute(IupGetHandle("txtPixelY"), IUP.IUP_VALUE, fl_my);
     elseif (ctgc.cur_prim == MARK)
         # atualiza os parametros da mark */
         mark_pos.x = x;
@@ -769,8 +770,8 @@ function follow(x::Integer, y::Integer)
         # atualiza a caixa de dialogo */
         fl_mx = @sprintf("%d", x)
         fl_my = @sprintf("%d", y)
-        IupSetAttribute(IupGetHandle("txtMarkX"), IUP_VALUE, fl_mx)
-        IupSetAttribute(IupGetHandle("txtMarkY"), IUP_VALUE, fl_my)
+        IupSetAttribute(IupGetHandle("txtMarkX"), IUP.IUP_VALUE, fl_mx)
+        IupSetAttribute(IupGetHandle("txtMarkY"), IUP.IUP_VALUE, fl_my)
     elseif (ctgc.cur_prim == RECT || ctgc.cur_prim == BOX)
         # atualiza os parametros da box
         if (ctgc.following != 0)
@@ -798,25 +799,25 @@ function follow(x::Integer, y::Integer)
         fl_nx = @sprintf("%d", box_pos.xmax);
         fl_my = @sprintf("%d", box_pos.ymin);
         fl_ny = @sprintf("%d", box_pos.ymax);
-        IupSetAttribute(IupGetHandle("txtLBX1"), IUP_VALUE, fl_mx);
-        IupSetAttribute(IupGetHandle("txtLBX2"), IUP_VALUE, fl_nx);
-        IupSetAttribute(IupGetHandle("txtLBY1"), IUP_VALUE, fl_my);
-        IupSetAttribute(IupGetHandle("txtLBY2"), IUP_VALUE, fl_ny);
+        IupSetAttribute(IupGetHandle("txtLBX1"), IUP.IUP_VALUE, fl_mx);
+        IupSetAttribute(IupGetHandle("txtLBX2"), IUP.IUP_VALUE, fl_nx);
+        IupSetAttribute(IupGetHandle("txtLBY1"), IUP.IUP_VALUE, fl_my);
+        IupSetAttribute(IupGetHandle("txtLBY2"), IUP.IUP_VALUE, fl_ny);
     elseif (ctgc.cur_prim == LINE)
         fl_mx = @sprintf("%d", x);
         fl_my = @sprintf("%d", y);
         line_pos.x2 = x;
         line_pos.y2 = y;
         if (ctgc.following != 0)
-            IupSetAttribute(IupGetHandle("txtLBX2"), IUP_VALUE, fl_mx);
-            IupSetAttribute(IupGetHandle("txtLBY2"), IUP_VALUE, fl_my);
+            IupSetAttribute(IupGetHandle("txtLBX2"), IUP.IUP_VALUE, fl_mx);
+            IupSetAttribute(IupGetHandle("txtLBY2"), IUP.IUP_VALUE, fl_my);
         else
             line_pos.x1 = x;
             line_pos.y1 = y;
-            IupSetAttribute(IupGetHandle("txtLBX1"), IUP_VALUE, fl_mx);
-            IupSetAttribute(IupGetHandle("txtLBX2"), IUP_VALUE, fl_mx);
-            IupSetAttribute(IupGetHandle("txtLBY1"), IUP_VALUE, fl_my);
-            IupSetAttribute(IupGetHandle("txtLBY2"), IUP_VALUE, fl_my);
+            IupSetAttribute(IupGetHandle("txtLBX1"), IUP.IUP_VALUE, fl_mx);
+            IupSetAttribute(IupGetHandle("txtLBX2"), IUP.IUP_VALUE, fl_mx);
+            IupSetAttribute(IupGetHandle("txtLBY1"), IUP.IUP_VALUE, fl_my);
+            IupSetAttribute(IupGetHandle("txtLBY2"), IUP.IUP_VALUE, fl_my);
         end
     elseif (ctgc.cur_prim == ARC || ctgc.cur_prim == SECTOR || ctgc.cur_prim == CHORD)
         if (ctgc.following != 0)
@@ -826,19 +827,19 @@ function follow(x::Integer, y::Integer)
             # atualiza a caixa de dialogo
             fl_mx = @sprintf("%d", arc_pos.w)
             fl_my = @sprintf("%d", arc_pos.h)
-            IupSetAttribute(IupGetHandle("txtASW"), IUP_VALUE, fl_mx)
-            IupSetAttribute(IupGetHandle("txtASH"), IUP_VALUE, fl_my)
+            IupSetAttribute(IupGetHandle("txtASW"), IUP.IUP_VALUE, fl_mx)
+            IupSetAttribute(IupGetHandle("txtASH"), IUP.IUP_VALUE, fl_my)
         else
             arc_pos.xc = x;
             arc_pos.xc = y;
             fl_mx = @sprintf("%d", x)
             fl_my = @sprintf("%d", y)
-            IupSetAttribute(IupGetHandle("txtASXC"), IUP_VALUE, fl_mx);
-            IupSetAttribute(IupGetHandle("txtASYC"), IUP_VALUE, fl_my);
+            IupSetAttribute(IupGetHandle("txtASXC"), IUP.IUP_VALUE, fl_mx);
+            IupSetAttribute(IupGetHandle("txtASYC"), IUP.IUP_VALUE, fl_my);
         end
     elseif (ctgc.cur_prim == TEXT)
-        IupSetAttribute(IupGetHandle("txtTextX"), IUP_VALUE, fl_nx)
-        IupSetAttribute(IupGetHandle("txtTextY"), IUP_VALUE, fl_ny)
+        IupSetAttribute(IupGetHandle("txtTextX"), IUP.IUP_VALUE, fl_nx)
+        IupSetAttribute(IupGetHandle("txtTextY"), IUP.IUP_VALUE, fl_ny)
     end
 end
 
@@ -978,10 +979,10 @@ end
 #-------------------------------------------------------------------------*/
 function draw()
 
-    IupSetAttribute(IupGetHandle("itEditUndo"), IUP_ACTIVE, IUP_YES);
-    ctgc.line_width = IupGetInt(IupGetHandle("txtLineWidth"), IUP_VALUE);
+    IupSetAttribute(IupGetHandle("itEditUndo"), IUP.IUP_ACTIVE, IUP.IUP.IUP_YES);
+    ctgc.line_width = IupGetInt(IupGetHandle("txtLineWidth"), IUP.IUP_VALUE);
     if (ctgc.line_width < 1) ctgc.line_width = 1;    end
-    ctgc.font_size = IupGetInt(IupGetHandle("txtFontSize"), IUP_VALUE);
+    ctgc.font_size = IupGetInt(IupGetHandle("txtFontSize"), IUP.IUP_VALUE);
 
     # escolhe entre o canvas na tela e o off-screen */
     if (ctgc.buffering != 0)
@@ -1035,8 +1036,8 @@ function draw()
         # armazena a box */
         #newbox(box_pos.xmin, box_pos.xmax, box_pos.ymin, box_pos.ymax); 
     elseif (ctgc.cur_prim == ARC)
-        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"),IUP_VALUE);
-        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"),IUP_VALUE);
+        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"),  IUP.IUP_VALUE);
+        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"),  IUP.IUP_VALUE);
         # atualiza a linha de status */
         #sprintf(ctgc.status_line,"cdArc( %d, %d, %d, %d, %.5G, %.5G)", arc_pos.xc, 
         #    arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
@@ -1046,8 +1047,8 @@ function draw()
         # armazena o arc */
         #newarc(arc_pos.xc, arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
     elseif (ctgc.cur_prim == SECTOR)
-        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"),IUP_VALUE);
-        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"),IUP_VALUE);
+        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"), IUP.IUP_VALUE);
+        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"), IUP.IUP_VALUE);
         # atualiza a linha de status */
         #sprintf(ctgc.status_line,"cdSector( %d, %d, %d, %d, %.5G, %.5G)", arc_pos.xc, 
         #    arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
@@ -1055,8 +1056,8 @@ function draw()
         cdSector(arc_pos.xc, arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
         #newsector(arc_pos.xc, arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
     elseif (ctgc.cur_prim == CHORD)
-        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"),IUP_VALUE);
-        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"),IUP_VALUE);
+        arc_pos.angle1 = IupGetFloat(IupGetHandle("txtASAngle1"), IUP.IUP_VALUE);
+        arc_pos.angle2 = IupGetFloat(IupGetHandle("txtASAngle2"), IUP.IUP_VALUE);
         #sprintf(ctgc.status_line,"cdChord( %d, %d, %d, %d, %.5G, %.5G)", arc_pos.xc, 
         #    arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
         #set_status();
@@ -1064,7 +1065,7 @@ function draw()
         #newchord(arc_pos.xc, arc_pos.yc, arc_pos.w, arc_pos.h, arc_pos.angle1, arc_pos.angle2);
     elseif (ctgc.cur_prim == PIXEL)
     elseif (ctgc.cur_prim == MARK)
-        mark_pos.size = IupGetInt(IupGetHandle("txtMarkSize"),IUP_VALUE);
+        mark_pos.size = IupGetInt(IupGetHandle("txtMarkSize"),  IUP.IUP_VALUE);
         #sprintf(ctgc.status_line,"cdMark( %d, %d)", mark_pos.x, mark_pos.y);
         #set_status();
         # desenha a marca na tela */
@@ -1073,18 +1074,18 @@ function draw()
         cdMark(mark_pos.x, mark_pos.y);
         #newmark(mark_pos.x, mark_pos.y, mark_pos.size);
     elseif (ctgc.cur_prim == TEXT)
-        if (IupGetAttribute(IupGetHandle("txtTextS"),IUP_VALUE) != C_NULL)
-            a=IupGetInt(IupGetHandle("txtTextX"),IUP_VALUE);
-            b=IupGetInt(IupGetHandle("txtTextY"),IUP_VALUE);
+        if (IupGetAttribute(IupGetHandle("txtTextS"), IUP.IUP_VALUE) != C_NULL)
+            a=IupGetInt(IupGetHandle("txtTextX"), IUP.IUP_VALUE);
+            b=IupGetInt(IupGetHandle("txtTextY"), IUP.IUP_VALUE);
             #sprintf(ctgc.status_line," cdText( %d, %d, ""%.3s""...)", a, b,
-            #    IupGetAttribute(IupGetHandle("txtTextS"),IUP_VALUE));
+            #    IupGetAttribute(IupGetHandle("txtTextS"),  IUP.IUP_VALUE));
             #set_status();
-            ctgc.text_orientation = IupGetInt(IupGetHandle("txtTextOrientation"),IUP_VALUE);
+            ctgc.text_orientation = IupGetInt(IupGetHandle("txtTextOrientation"),IUP.IUP_VALUE);
             cdFont(ctgc.font_typeface,ctgc.font_style,ctgc.font_size);
             cdTextAlignment(ctgc.text_alignment);
             cdTextOrientation(ctgc.text_orientation);
-            cdText(a,b,IupGetAttribute(IupGetHandle("txtTextS"),IUP_VALUE));
-            #newtext(a,b,IupGetAttribute(IupGetHandle("txtTextS"),IUP_VALUE));
+            cdText(a,b,IupGetAttribute(IupGetHandle("txtTextS"), IUP.IUP_VALUE));
+            #newtext(a,b,IupGetAttribute(IupGetHandle("txtTextS"),  IUP.IUP_VALUE));
         end
     elseif (ctgc.cur_prim == POLY)
         if (ctgc.num_points > 1)
@@ -1093,7 +1094,7 @@ function draw()
                 cdVertex(ctgc.points[a].x,ctgc.points[a].y);
             end
             cdEnd()
-            if (ctgc.poly_mode != CD_CLIP)
+            if (ctgc.poly_mode != IUP.CD_CLIP)
                 #newpoly()
             end
             ctgc.num_points = 0

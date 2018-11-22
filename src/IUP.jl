@@ -1,4 +1,7 @@
+__precompile__()
 module IUP
+
+include("libiup.jl")
 
 export
     Ihandle,
@@ -64,8 +67,9 @@ export
     IUP_ERROR, IUP_NOERROR, IUP_OPENED, IUP_INVALID, IUP_INVALID_ID, IUP_IGNORE,
     IUP_DEFAULT, IUP_CENTER, IUP_LEFT, IUP_TOP, IUP_BOTTOM, IUP_RIGHT, IUP_MOUSEPOS, IUP_CURRENT, IUP_CENTERPARENT,
     IUP_BUTTON1, IUP_BUTTON2, IUP_BUTTON3, IUP_BUTTON4, IUP_BUTTON5
+    IUP_IMAGE, IUP_TITLE, IUP_VALUE, IUP_ACTIVE, IUP_YES, IUP_NO, IUP_X, IUP_Y, IUP_VISIBLE
 
-include("libiup.jl")
+
 include("iupcontrols.jl")
 include("iup_plot.jl")
 include("iup_mglplot.jl")
