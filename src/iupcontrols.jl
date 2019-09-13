@@ -12,21 +12,11 @@ end
 function IupControlsClose()
     ccall((:IupControlsClose, libiupcontrols_), Void, (),)
 end
-function IupColorbar()
-    ccall((:IupColorbar, libiupcontrols_), Ptr{Cint}, (),)
-end
+
 function IupCells()
     ccall((:IupCells, libiupcontrols_), Ptr{Cint}, (),)
 end
-function IupColorBrowser()
-    ccall((:IupColorBrowser, libiupcontrols_), Ptr{Cint}, (),)
-end
-function IupGauge()
-    ccall((:IupGauge, libiupcontrols_), Ptr{Cint}, (),)
-end
-function IupDial(orient::String="")
-    ccall((:IupDial, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), orient)
-end
+
 function IupMatrix(action::String="")
     ccall((:IupMatrix, libiupcontrols_), Ptr{Ihandle}, (Ptr{UInt8},), action)
 end

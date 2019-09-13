@@ -1133,6 +1133,23 @@ const IUP_RECBINARY = 0
 const IUP_RECTEXT = 1
 # end enum ANONYMOUS_3
 
+
+function IupColorbar()
+    ccall((:IupColorbar, iup), Ptr{Cint}, (),)
+end
+
+function IupColorBrowser()
+    ccall((:IupColorBrowser, iup), Ptr{Cint}, (),)
+end
+
+function IupGauge()
+    ccall((:IupGauge, iup), Ptr{Cint}, (),)
+end
+
+function IupDial(orient::String="")
+    ccall((:IupDial, iup), Ptr{Ihandle}, (Ptr{UInt8},), orient)
+end
+
 function IupVbox(c1::Ptr{Ihandle}, c2=C_NULL, c3=C_NULL, c4=C_NULL, c5=C_NULL, c6=C_NULL, c7=C_NULL, c8=C_NULL, c9=C_NULL,
         c10=C_NULL, c11=C_NULL, c12=C_NULL, c13=C_NULL, c14=C_NULL, c15=C_NULL)
     ccall((:IupVbox, iup), Ptr{Ihandle}, (Ptr{Ihandle}, Ptr{Ihandle}, Ptr{Ihandle}, Ptr{Ihandle}, Ptr{Ihandle},
