@@ -1,7 +1,8 @@
 # Julia wrapper for header: /Volumes/BOOTCAMP/programs/compa_libs/iup/cd/include/cd.h
 # Automatically generated using Clang.jl wrap_c, version 0.0.0
 
-@static is_windows()? (const libcd_ = "cd") : (const libcd_ = "libcd")  # Name of IUP shared lib.
+@static Sys.iswindows() ? (const libcd_ = "cd") : (const libcd_ = "libcd")  # Name of IUP shared lib.
+@static Sys.iswindows() ? (const libcdpdf_ = "cdpdf") : (const libcdpdf_ = "libcdpdf")  # Name of IUP shared lib.
 
 # Skipping MacroDefinition: va_start(ap,param)__builtin_va_start(ap,param)
 # Skipping MacroDefinition: va_end(ap)__builtin_va_end(ap)
@@ -2538,4 +2539,12 @@ end
 
 function cdContextNativeWindow()
     ccall( (:cdContextNativeWindow, libcd_), Ptr{cdContext}, (),)
+end
+
+function cdContextPDF()
+    ccall((:cdContextPDF, libcdpdf_), Ptr{cdContext}, ())
+end
+
+function IupPlotPaintTo(ih::Ptr{Ihandle}, cnv::Ptr{cdCanvas})
+  ccall( (:IupPlotPaintTo, "iup_plot"), Cvoid, (Ptr{Ihandle}, Ptr{cdCanvas}), ih, cnv)
 end
