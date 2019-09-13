@@ -1133,6 +1133,10 @@ const IUP_RECBINARY = 0
 const IUP_RECTEXT = 1
 # end enum ANONYMOUS_3
 
+function iupKeyCodeToName(code)
+    p = ccall((:iupKeyCodeToName, iup), Ptr{UInt8}, (Cint,), code)
+    return s = unsafe_string(p) 
+end
 
 function IupColorbar()
     ccall((:IupColorbar, iup), Ptr{Cint}, (),)
