@@ -63,7 +63,7 @@ function WindowButtonDownFcn(canvas::Ptr{Ihandle}, f::Function)
     # The interface for the callback function is described in IUP docs under BUTTON_CB
     # int function(Ihandle* ih, int button, int pressed, int x, int y, char* status); [in C]
     # Warning: the macros that make use of the status variable are not yet implemented
-    IupSetCallback(canvas, "BUTTON_CB", cfunction(f, Int, (Ptr{Ihandle}, Char, Cint, Cint, Cint, Ptr{UInt8})))
+    IupSetCallback(canvas, "BUTTON_CB", Base.unsafe_convert(Ptr{Cvoid}, @cfunction($f, Int, (Ptr{Ihandle}, Char, Cint, Cint, Cint, Ptr{UInt8}))))
 end
 
 # -------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ function WindowButtonMotionFcn(canvas::Ptr{Ihandle}, f::Function)
     # The interface for the callback function is described in IUP docs under MOTION_CB
     # int function(Ihandle *ih, int x, int y, char *status); [in C]
     # Warning: the macros that make use of the status variable are not yet implemented
-    IupSetCallback(canvas, "MOTION_CB", cfunction(f, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{UInt8})))
+    IupSetCallback(canvas, "MOTION_CB", Base.unsafe_convert(Ptr{Cvoid}, @cfunction($f, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{UInt8}))))
 end
 
 # -------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ function KeyPressFcn(canvas::Ptr{Ihandle}, f::Function)
     # Sets the Key press callback function, which is invoked when a key is pressed or released.
     # The interface for the callback function is described in IUP docs under KEYPRESS_CB
     # int function(Ihandle *ih, int c, int press); [in C]
-    IupSetCallback(canvas, "KEYPRESS_CB", cfunction(f, Int, (Ptr{Ihandle}, Char, Cint)))
+    IupSetCallback(canvas, "KEYPRESS_CB", Base.unsafe_convert(Ptr{Cvoid}, @cfunction($f, Int, (Ptr{Ihandle}, Char, Cint))))
 end
 
 # -------------------------------------------------------------------------------
