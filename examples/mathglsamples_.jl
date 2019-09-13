@@ -3,10 +3,34 @@
 
 module mathglsamples_
 
+using Printf
 using IUP
 
 export
     mathglsamples
+
+# forward declaration to workaround '@cfunction'
+function close_cb  end
+function action_cb  end
+function minmaxY_dial_btndown_cb end
+function minmaxY_dial_btnup_cb end
+function autoscaleX_tgg_cb end
+function autoscaleY_tgg_cb end
+function minmaxX_dial_btndown_cb end
+function minmaxX_dial_btnup_cb end
+function grid_tgg_cb  end
+function box_tgg_cb  end
+function legend_tgg_cb  end
+function transp_tgg_cb  end
+function light_tgg_cb  end
+function aa_tgg_cb  end
+function opengl_tgg_cb  end
+function bt1_cb  end
+function bt2_cb  end
+function bt3_cb  end
+function bt4_cb  end
+function postdraw_cb  end
+function minmaxY_dial_btndown_cb end
 
 global test_list = [
   ["Plot (Linear 1D)" "SamplePlotLinear1D"],
@@ -161,7 +185,7 @@ function mathglsamples()
     IupSetAttribute(dlg, "MARGIN", "10x10");
     IupSetAttribute(dlg, "GAP", "5");
     IupSetAttribute(dlg, "TITLE", "MathGL samples w/ IupMglPlot");
-    IupSetCallback(dlg, "CLOSE_CB", cfunction(close_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(dlg, "CLOSE_CB", @cfunction(close_cb, Int, (Ptr{Ihandle},)))
 
     IupSetAttribute(plot, "RASTERSIZE", "700x500")         # Minimum initial size
     #  IupSetAttribute(plot, "RASTERSIZE", "350x250");
@@ -171,7 +195,7 @@ function mathglsamples()
     IupSetAttribute(list, "EXPAND", "VERTICAL")
     IupSetAttribute(list, "VISIBLELINES", "15")            # Not all, because the dialog will be too big
     IupSetAttribute(list, "VISIBLECOLUMNS", "15")
-    IupSetCallback(list, "ACTION", cfunction(action_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int, Int)))
+    IupSetCallback(list, "ACTION", @cfunction(action_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int, Int)))
 
     for i = 1:count
         str = @sprintf("%d", i)
@@ -202,9 +226,9 @@ function controlPanel()
     minmaxY_dial = IupDial("VERTICAL")
     IupSetAttribute(minmaxY_dial, "ACTIVE", "NO")
     IupSetAttribute(minmaxY_dial, "SIZE", "20x52")
-    IupSetCallback(minmaxY_dial, "BUTTON_PRESS_CB", cfunction(minmaxY_dial_btndown_cb, Int, (Ptr{Ihandle},)))
-    IupSetCallback(minmaxY_dial, "MOUSEMOVE_CB", cfunction(minmaxY_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(minmaxY_dial, "BUTTON_RELEASE_CB", cfunction(minmaxY_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(minmaxY_dial, "BUTTON_PRESS_CB", @cfunction(minmaxY_dial_btndown_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(minmaxY_dial, "MOUSEMOVE_CB", @cfunction(minmaxY_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(minmaxY_dial, "BUTTON_RELEASE_CB", @cfunction(minmaxY_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
 
     boxminmaxY_dial = IupVbox(lbl1, minmaxY_dial, lbl2)
     IupSetAttribute(boxminmaxY_dial, "ALIGNMENT", "ACENTER");
@@ -212,7 +236,7 @@ function controlPanel()
     IupSetAttribute(boxminmaxY_dial, "MARGIN", "2");
 
     autoscaleY_tgg = IupToggle("Y Autoscale")
-    IupSetCallback(autoscaleY_tgg, "ACTION", cfunction(autoscaleY_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(autoscaleY_tgg, "ACTION", @cfunction(autoscaleY_tgg_cb, Int, (Ptr{Ihandle}, Int)))
     IupSetAttribute(autoscaleY_tgg, "VALUE", "ON");
 
     f1 = IupFrame(IupVbox(boxminmaxY_dial, autoscaleY_tgg) )
@@ -227,9 +251,9 @@ function controlPanel()
     minmaxX_dial = IupDial("HORIZONTAL");
     IupSetAttribute(minmaxX_dial, "ACTIVE", "NO");
     IupSetAttribute(minmaxX_dial, "SIZE", "64x16");
-    IupSetCallback(minmaxX_dial, "BUTTON_PRESS_CB", cfunction(minmaxX_dial_btndown_cb, Int, (Ptr{Ihandle},)))
-    IupSetCallback(minmaxX_dial, "MOUSEMOVE_CB", cfunction(minmaxX_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(minmaxX_dial, "BUTTON_RELEASE_CB", cfunction(minmaxX_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(minmaxX_dial, "BUTTON_PRESS_CB", @cfunction(minmaxX_dial_btndown_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(minmaxX_dial, "MOUSEMOVE_CB", @cfunction(minmaxX_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(minmaxX_dial, "BUTTON_RELEASE_CB", @cfunction(minmaxX_dial_btnup_cb, Int, (Ptr{Ihandle}, Float64)))
 
     boxminmaxX_dial = IupHbox(lbl1, minmaxX_dial, lbl2);
     IupSetAttribute(boxminmaxX_dial, "ALIGNMENT", "ACENTER");
@@ -237,7 +261,7 @@ function controlPanel()
     IupSetAttribute(boxminmaxX_dial, "MARGIN", "2");
 
     autoscaleX_tgg = IupToggle("X Autoscale");
-    IupSetCallback(autoscaleX_tgg, "ACTION", cfunction(autoscaleX_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(autoscaleX_tgg, "ACTION", @cfunction(autoscaleX_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     f2 = IupFrame(IupVbox(boxminmaxX_dial, autoscaleX_tgg) )
     IupSetAttribute(f2, "TITLE", "X Zoom");
@@ -245,13 +269,13 @@ function controlPanel()
     IupSetAttribute(f2, "MARGIN", "5x5");
 
     grid_tgg = IupToggle("Grid");
-    IupSetCallback(grid_tgg, "ACTION", cfunction(grid_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(grid_tgg, "ACTION", @cfunction(grid_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     box_tgg = IupToggle("Box");
-    IupSetCallback(box_tgg, "ACTION", cfunction(box_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(box_tgg, "ACTION", @cfunction(box_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     legend_tgg = IupToggle("Legend");
-    IupSetCallback(legend_tgg, "ACTION", cfunction(legend_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(legend_tgg, "ACTION", @cfunction(legend_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     lbl3 = IupLabel("");
     IupSetAttribute(lbl3, "SEPARATOR", "HORIZONTAL");
@@ -259,10 +283,10 @@ function controlPanel()
     IupSetAttribute(lbl3, "RASTERSIZE", "160x2");
 
     transp_tgg = IupToggle("Transparent");
-    IupSetCallback(transp_tgg, "ACTION", cfunction(transp_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(transp_tgg, "ACTION", @cfunction(transp_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     light_tgg = IupToggle("Light");
-    IupSetCallback(light_tgg, "ACTION", cfunction(light_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(light_tgg, "ACTION", @cfunction(light_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     lbl4 = IupLabel("");
     IupSetAttribute(lbl4, "SEPARATOR", "HORIZONTAL");
@@ -270,22 +294,22 @@ function controlPanel()
     IupSetAttribute(lbl4, "RASTERSIZE", "160x2");
 
     aa_tgg = IupToggle("Antialias");
-    IupSetCallback(aa_tgg, "ACTION", cfunction(aa_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(aa_tgg, "ACTION", @cfunction(aa_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     opengl_tgg = IupToggle("OpenGL");
-    IupSetCallback(opengl_tgg, "ACTION", cfunction(opengl_tgg_cb, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(opengl_tgg, "ACTION", @cfunction(opengl_tgg_cb, Int, (Ptr{Ihandle}, Int)))
 
     bt1 = IupButton("Export SVG");
-    IupSetCallback(bt1, "ACTION", cfunction(bt1_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(bt1, "ACTION", @cfunction(bt1_cb, Int, (Ptr{Ihandle},)))
 
     bt2 = IupButton("Export EPS");
-    IupSetCallback(bt2, "ACTION", cfunction(bt2_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(bt2, "ACTION", @cfunction(bt2_cb, Int, (Ptr{Ihandle},)))
 
     bt3 = IupButton("Copy RGB");
-    #IupSetCallback(bt3, "ACTION", cfunction(bt3_cb, Int, (Ptr{Ihandle}, Int)))
+    #IupSetCallback(bt3, "ACTION", @cfunction(bt3_cb, Int, (Ptr{Ihandle}, Int)))
 
     bt4 = IupButton("Save RGB");
-    #IupSetCallback(bt4, "ACTION", cfunction(bt4_cb, Int, (Ptr{Ihandle}, Int)))
+    #IupSetCallback(bt4, "ACTION", @cfunction(bt4_cb, Int, (Ptr{Ihandle}, Int)))
 
     vbox1 = IupFrame(IupVbox(f1, 
                            f2, 
@@ -334,6 +358,9 @@ function ChangePlot(item::Int)
     try
         errmsg = unsafe_string(errmsg)        # This will error if pointer is NULL
         IupMessage("Error", errmsg)        # Found f no way to test if the pointer is NULL
+    catch
+        errmsg = "NULL"
+        IupMessage("Error", errmsg)
     end
 end
 
@@ -383,7 +410,7 @@ function UpdateFlags()
 
     # grid
     value = IupGetAttribute(plot, "GRID")
-    if (value != 0 && search(unsafe_string(value), "XYZ") != 0)
+    if (value != 0 && occursin("XYZ", unsafe_string(value)) != 0)
         IupSetAttribute(grid_tgg, "VALUE", "ON")
     else
         IupSetAttribute(grid_tgg, "VALUE", "OFF")
@@ -748,7 +775,7 @@ end
 
 # --------------------------------------------------------------------------------------
 function SampleText()
-    IupSetCallback(plot, "POSTDRAW_CB", cfunction(postdraw_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(plot, "POSTDRAW_CB", @cfunction(postdraw_cb, Int, (Ptr{Ihandle},)))
 end
 
 # --------------------------------------------------------------------------------------

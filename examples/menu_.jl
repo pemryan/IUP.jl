@@ -5,6 +5,9 @@ using IUP
 export
     menu
 
+# forward declaration to workaround '@cfunction'
+function exit_cb end
+
 #------------------------example html/examples/C/menu.c ----------------------------------
 function menu()
     IupOpen()    #Initializes IUP
@@ -20,7 +23,7 @@ function menu()
     IupSetAttribute(item_undo, "ACTIVE", "NO");
     item_exit = IupItem("Exit", "");
     IupSetAttribute(item_exit, "KEY", "x");
-    IupSetCallback(item_exit, "ACTION", cfunction(exit_cb, Cint, (Ptr{Ihandle},)))
+    IupSetCallback(item_exit, "ACTION", @cfunction(exit_cb, Cint, (Ptr{Ihandle},)))
 
     file_menu = IupMenu(item_open, 
                       item_save, 

@@ -22,6 +22,12 @@ using IUP
 export
   im_view
 
+# forward declaration to workaround '@cfunction'
+function cbCanvasButton end
+function cbCanvasRepaint end
+function cbCanvasMap end
+function cbDialogClose end
+
 global disable_repaint = false      # used to optimize repaint, while opening a new file
 
 # --------------------------------------------------------------------------------
@@ -180,12 +186,12 @@ end
 function CreateDialog()
 
     iup_canvas = IupCanvas()
-    IupSetCallback(iup_canvas, "BUTTON_CB", cfunction(cbCanvasButton, Int, (Ptr{Ihandle}, Int, Int)))
-    IupSetCallback(iup_canvas, "ACTION", cfunction(cbCanvasRepaint, Int, (Ptr{Ihandle},)))
-    IupSetCallback(iup_canvas, "MAP_CB", cfunction(cbCanvasMap, Int, (Ptr{Ihandle},)))
+    IupSetCallback(iup_canvas, "BUTTON_CB", @cfunction(cbCanvasButton, Int, (Ptr{Ihandle}, Int, Int)))
+    IupSetCallback(iup_canvas, "ACTION", @cfunction(cbCanvasRepaint, Int, (Ptr{Ihandle},)))
+    IupSetCallback(iup_canvas, "MAP_CB", @cfunction(cbCanvasMap, Int, (Ptr{Ihandle},)))
 
     iup_dialog = IupDialog(iup_canvas)
-    IupSetCallback(iup_dialog, "CLOSE_CB", cfunction(cbDialogClose, Int, (Ptr{Ihandle},)))
+    IupSetCallback(iup_dialog, "CLOSE_CB", @cfunction(cbDialogClose, Int, (Ptr{Ihandle},)))
     IupSetAttribute(iup_dialog, "SIZE", "HALFxHALF")      # initial size
 
     return iup_dialog

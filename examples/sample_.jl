@@ -3,10 +3,19 @@
 
 module sample_
 
+using Printf
 using IUP
 
 export
     sample
+
+# forward declaration to workaround '@cfunction'
+function action1_cb end
+function action2_cb end
+function action3_cb end
+function copydata_cb end
+function valuechanged_cb end
+function k_any end
 
 #using IProfile
 #@iprofile begin
@@ -68,17 +77,17 @@ function SampleTest()
             set_callbacks(IupSetAttributes(IupButton("Button Text"), "PADDING=5x5")), 
             IupSetCallbacks(set_callbacks(IupSetAttributes(IupButton("Text"),"IMAGE=img1, PADDING=5x5")),
                 "ACTION",
-                cfunction(action1_cb, Int, (Ptr{Ihandle},))
+                @cfunction(action1_cb, Int, (Ptr{Ihandle},))
                 ),
             IupSetCallbacks(set_callbacks(IupSetAttributes(IupButton(""), "IMAGE=img1")),
                 "ACTION",
-                cfunction(action2_cb, Int, (Ptr{Ihandle},))),
+                @cfunction(action2_cb, Int, (Ptr{Ihandle},))),
             IupSetCallbacks(set_callbacks(IupSetAttributes(IupButton(""), "IMAGE=img1,IMPRESS=img2")),
                 "ACTION",
-                cfunction(action3_cb, Int, (Ptr{Ihandle},))),
+                @cfunction(action3_cb, Int, (Ptr{Ihandle},))),
             IupSetCallbacks(set_callbacks(IupSetAttributes(IupButton(""), "BGCOLOR=\"255 0 128\", SIZE=20x10")),
                 "ACTION",
-                cfunction(action3_cb, Int, (Ptr{Ihandle},)))
+                @cfunction(action3_cb, Int, (Ptr{Ihandle},)))
         ))
     IupSetAttribute(_frm_1,"TITLE","IupButton")
 
@@ -215,7 +224,7 @@ function SampleTest()
     #IupSetAttribute(box, "FGCOLOR", "255 0 0")
     #IupSetAttribute(dlg,"RASTERSIZE","1000x800")
 
-    IupSetCallback(dlg, "COPYDATA_CB", cfunction(copydata_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int)))
+    IupSetCallback(dlg, "COPYDATA_CB", @cfunction(copydata_cb, Int, (Ptr{Ihandle}, Ptr{UInt8}, Int)))
 
     #IupSetGlobal("INPUTCALLBACKS", "Yes");
     #IupSetFunction("GLOBALKEYPRESS_CB", (Icallback)globalkeypress_cb);
@@ -243,7 +252,7 @@ function copydata_cb(ih::Ptr{Ihandle}, value::Ptr{UInt8}, size::Int)
 end
 
 function set_callbacks(ih::Ptr{Ihandle})
-    IupSetCallback(ih, "VALUECHANGED_CB", cfunction(valuechanged_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(ih, "VALUECHANGED_CB", @cfunction(valuechanged_cb, Int, (Ptr{Ihandle},)))
 
     #IupSetCallback(ih, "GETFOCUS_CB", (Icallback)getfocus_cb);
     #IupSetCallback(ih, "KILLFOCUS_CB", (Icallback)killfocus_cb);
@@ -251,7 +260,7 @@ function set_callbacks(ih::Ptr{Ihandle})
     #IupSetCallback(ih, "ENTERWINDOW_CB", (Icallback)enterwindow_cb);
     #IupSetCallback(ih, "LEAVEWINDOW_CB", (Icallback)leavewindow_cb);
 
-    IupSetCallback(ih, "K_ANY", cfunction(k_any, Int, (Ptr{Ihandle}, Int)))
+    IupSetCallback(ih, "K_ANY", @cfunction(k_any, Int, (Ptr{Ihandle}, Int)))
     #IupSetCallback(ih, "HELP_CB", (Icallback)help_cb)
 
     return ih
@@ -281,21 +290,21 @@ function valuechanged_cb(ih::Ptr{Ihandle})
 end
 
 function k_any(ih::Ptr{Ihandle}, c::Int)
-    if (iup_isprint(c))
-        @printf("K_ANY(%s, %d = %s \'%c\')\n", IupGetClassName(ih), c, iupKeyCodeToName(c), (char)c)
+    if (IUP.iup_isprint(c))
+        @printf("K_ANY(%s, %d = %s \'%c\')\n", IupGetClassName(ih), c, IUP.iupKeyCodeToName(c), Char(c))
     else
-        @printf("K_ANY(%s, %d = %s)\n", IupGetClassName(ih), c, iupKeyCodeToName(c))
+        @printf("K_ANY(%s, %d = %s)\n", IupGetClassName(ih), c, IUP.iupKeyCodeToName(c))
     end
-    if (c == K_r)
+    if (c == IUP.K_r)
         IupRecordInput("inputtest.iup", IUP_RECTEXT); return IUP_IGNORE        #IUP_RECBINARY, IUP_RECTEXT 
     end
-    if (c == K_s)
+    if (c == IUP.K_s)
         IupRecordInput(NULL, 0); IupPlayInput(NULL); return IUP_IGNORE
     end
-    if (c == K_p)
+    if (c == IUP.K_p)
         IupPlayInput("inputtest.iup"); return IUP_IGNORE
     end
-    return IUP_CONTINUE
+    return IUP.IUP_CONTINUE
 end
 
 function help_cb(ih::Ptr{Ihandle})

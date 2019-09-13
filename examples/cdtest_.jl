@@ -7,7 +7,22 @@ export
 
 include("../examples/cdtest_h.jl")
 
-type tCTC_l
+# forward declaration to workaround '@cfunction'
+function fMotionCB end
+function fButtonCB end
+function fFileExit end
+function fHelpAbout end
+function fLine end
+function fPoly end
+function fRect end
+function fBox end
+function fArc end
+function fSector end
+function fText end
+function fMark end
+function fDraw end
+
+struct tCTC_l
     iup_canvas::Ptr{cdCanvas}
 end
 
@@ -141,8 +156,8 @@ h = unsafe_load(h)
 
     # os call-backs do canvas devem ser associados depois de sua criacao */
     #IupSetFunction("cmdRepaint", (Icallback) fRepaint);
-    IupSetFunction("cmdMotionCB", cfunction(fMotionCB, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{UInt8})))
-    IupSetFunction("cmdButtonCB", cfunction(fButtonCB, Int, (Ptr{Ihandle}, Char, Cint, Cint, Cint, Cint)))
+    IupSetFunction("cmdMotionCB", @cfunction(fMotionCB, Int, (Ptr{Ihandle}, Cint, Cint, Ptr{UInt8})))
+    IupSetFunction("cmdButtonCB", @cfunction(fButtonCB, Int, (Ptr{Ihandle}, Char, Cint, Cint, Cint, Cint)))
     #IupSetFunction("cmdResizeCB", (Icallback) fResizeCB);
     #IupSetFunction("cmdGetFocusCB", (Icallback) fGetFocusCB);
 
@@ -155,12 +170,12 @@ h = unsafe_load(h)
     ctgc.fill_mode = IUP.CD_EVENODD;
     ctgc.line_width = 1;
     ctgc.font_style = IUP.CD_PLAIN;
-    ctgc.font_typeface = IUP.CD_SYSTEM;
+    ctgc.font_structface = IUP.CD_SYSTEM;
     ctgc.font_size = IUP.CD_STANDARD;
     ctgc.text_alignment = IUP.CD_BASE_LEFT;
     #ctgc.text_orientation = 0
     ctgc.back_opacity =  IUP.CD_TRANSPARENT;
-    ctgc.mark_type = IUP.CD_STAR;
+    ctgc.mark_struct = IUP.CD_STAR;
     ctgc.poly_mode = IUP.CD_OPEN_LINES;
     ctgc.interior_style = IUP.CD_SOLID;
     ctgc.hatch = IUP.CD_HORIZONTAL;
@@ -185,7 +200,7 @@ h = unsafe_load(h)
 
     # inicializaccao do Canvas do IUP */
     cdActivate(ctgc.iup_canvas)
-    cdFont(ctgc.font_typeface,ctgc.font_style,ctgc.font_size);
+    cdFont(ctgc.font_structface,ctgc.font_style,ctgc.font_size);
     cdBackground(ctgc.background);
     cdClear()
 
@@ -252,7 +267,7 @@ h = unsafe_load(h)
     if (use_contextplus != 0) cdUseContextPlus(1)    end
     ctgc.wd_canvas  = cdCreateCanvas(cdContextIup(), IupGetHandle("cnvWDCanvas"));
     ctgc.pic_canvas = cdCreateCanvas(cdContextIup(), IupGetHandle("cnvPICCanvas"));
-    ctgc.picture    = cdCreateCanvas(cdContextIup(), convert(Ptr{Void}, Base.unsafe_convert(Ptr{UInt8},"")))
+    ctgc.picture    = cdCreateCanvas(cdContextIup(), convert(Ptr{Cvoid}, Base.unsafe_convert(Ptr{UInt8},"")))
     if (use_contextplus != 0) cdUseContextPlus(0)    end
 
     # CDTEST default values */
@@ -310,19 +325,19 @@ end
 
 # --------------------------------------------------------------------------
 function setcallbacks()
-    IupSetFunction("cmdFileExit",  cfunction(fFileExit, Int, (),))
-    IupSetFunction("cmdHelpAbout", cfunction(fHelpAbout,Int, (),))
+    IupSetFunction("cmdFileExit",  @cfunction(fFileExit, Int, (),))
+    IupSetFunction("cmdHelpAbout", @cfunction(fHelpAbout,Int, (),))
 
-    IupSetFunction("cmdLine", cfunction(fLine, Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdPoly", cfunction(fPoly, Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdRect", cfunction(fRect, Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdBox",  cfunction(fBox,  Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdArc",  cfunction(fArc,  Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdSector", cfunction(fSector,  Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdText", cfunction(fText, Int, (Ptr{Ihandle},)))
-    IupSetFunction("cmdMark", cfunction(fMark, Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdLine", @cfunction(fLine, Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdPoly", @cfunction(fPoly, Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdRect", @cfunction(fRect, Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdBox",  @cfunction(fBox,  Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdArc",  @cfunction(fArc,  Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdSector", @cfunction(fSector,  Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdText", @cfunction(fText, Int, (Ptr{Ihandle},)))
+    IupSetFunction("cmdMark", @cfunction(fMark, Int, (Ptr{Ihandle},)))
 
-    IupSetFunction("cmdDraw", cfunction(fDraw, Int, (),))
+    IupSetFunction("cmdDraw", @cfunction(fDraw, Int, (),))
 end
 
 # Tchau

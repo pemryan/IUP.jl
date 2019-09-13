@@ -3,7 +3,13 @@ module val_
 export
     val
 
+using Printf
 using IUP
+
+# forward declaration to workaround '@cfunction'
+function button_press end
+function button_release end
+function mousemove end
 
 #------------------------example html/examples/C/val.c ----------------------------------
 function val()
@@ -25,13 +31,13 @@ function val()
         )
     )
 
-    IupSetCallback(val_v, "BUTTON_PRESS_CB",   cfunction(button_press, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(val_v, "BUTTON_RELEASE_CB", cfunction(button_release, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(val_v, "MOUSEMOVE_CB",      cfunction(mousemove, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_v, "BUTTON_PRESS_CB",   @cfunction(button_press, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_v, "BUTTON_RELEASE_CB", @cfunction(button_release, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_v, "MOUSEMOVE_CB",      @cfunction(mousemove, Int, (Ptr{Ihandle}, Float64)))
 
-    IupSetCallback(val_h, "BUTTON_PRESS_CB",   cfunction(button_press, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(val_h, "BUTTON_RELEASE_CB", cfunction(button_release, Int, (Ptr{Ihandle}, Float64)))
-    IupSetCallback(val_h, "MOUSEMOVE_CB",      cfunction(mousemove, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_h, "BUTTON_PRESS_CB",   @cfunction(button_press, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_h, "BUTTON_RELEASE_CB", @cfunction(button_release, Int, (Ptr{Ihandle}, Float64)))
+    IupSetCallback(val_h, "MOUSEMOVE_CB",      @cfunction(mousemove, Int, (Ptr{Ihandle}, Float64)))
 
     IupSetAttribute(dlg_val, "TITLE", "IupVal")
     IupSetAttribute(dlg_val, "MARGIN", "10x10")

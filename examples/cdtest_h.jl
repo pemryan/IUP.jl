@@ -2,6 +2,7 @@ const OBJC_NEW_PROPERTIES = 1
 const MAXPOINTS = 300
 # Skipping MacroDefinition: isdigit(_)(((_)>='0')&&((_)<='9'))
 # Skipping MacroDefinition: ignore(_)(void)(_)
+
 # begin enum ANONYMOUS_1
 const LINE = 0
 const RECT = 1
@@ -20,15 +21,18 @@ const META = 13
 # end enum ANONYMOUS_1
 # begin enum tPrim
 const tPrim = UInt32
+
 # begin enum ANONYMOUS_2
 const BACKGROUND = 0
 const FOREGROUND = 1
 # end enum ANONYMOUS_2
+
 # begin enum ANONYMOUS_3
 const NO_BUFFER = 0
 const IMAGE_BUFFER = 1
 const IMAGERGB_BUFFER = 2
 # end enum ANONYMOUS_3
+
 # begin enum ANONYMOUS_4
 const NEWPOINT = 0
 const MOVE = 1
@@ -36,18 +40,22 @@ const CLOSE = 2
 const CENTER = 3
 const REPAINT = 4
 # end enum ANONYMOUS_4
+
 # begin enum tBoolean
 const tBoolean = UInt32
 # end enum tBoolean
+
 type tPoint
     x::Cint
     y::Cint
 end
-type tMeta
+
+mutable struct tMeta
     ctx::Ptr{Cint}
     filename::Ptr{UInt8}
 end
-type tLB
+
+mutable struct tLB
     x1::Cint
     y1::Cint
     x2::Cint
@@ -63,7 +71,8 @@ type tLB
     foreground::Clong
     background::Clong
 end
-type tAS
+
+mutable struct tAS
     xc::Cint
     yc::Cint
     w::Cint
@@ -81,35 +90,39 @@ type tAS
     foreground::Clong
     background::Clong
 end
-type tPixel
+
+mutable struct tPixel
     x::Cint
     y::Cint
     write_mode::Cint
     foreground::Clong
 end
-type tMark
+
+mutable struct tMark
     x::Cint
     y::Cint
     write_mode::Cint
-    mark_type::Cint
+    mark_struct::Cint
     mark_size::Cint
     foreground::Clong
 end
-type tText
+
+mutable struct tText
     x::Cint
     y::Cint
     s::Ptr{UInt8}
     write_mode::Cint
     font_size::Cint
     font_style::Cint
-    font_typeface::Cint
+    font_structface::Cint
     back_opacity::Cint
     text_orientation::Cdouble
     text_alignment::Cint
     foreground::Clong
     background::Clong
 end
-type tPoly
+
+mutable struct tPoly
     poly_mode::Cint
     write_mode::Cint
     line_style::Cint
@@ -126,18 +139,19 @@ type tPoly
     points::Ptr{tPoint}
 end
 
-type tnode
-    _type::tPrim
+mutable struct tnode
+    _struct::tPrim
     par::Union{tLB, tAS, tPoly, tPixel, tMark, tText, tMeta}
     next::Ptr{tnode}
 end
 
-type tList
-    _type::tPrim
+mutable struct tList
+    _struct::tPrim
     par::Union{tLB, tAS, tPoly, tPixel, tMark, tText, tMeta}
     next::Ptr{tnode}
 end
-immutable Array_100_Cuchar
+
+struct Array_100_Cuchar
     d1::Cuchar
     d2::Cuchar
     d3::Cuchar
@@ -239,7 +253,8 @@ immutable Array_100_Cuchar
     d99::Cuchar
     d100::Cuchar
 end
-immutable Array_100_Clong
+
+struct Array_100_Clong
     d1::Clong
     d2::Clong
     d3::Clong
@@ -341,13 +356,15 @@ immutable Array_100_Clong
     d99::Clong
     d100::Clong
 end
-immutable Array_4_Cint
+
+struct Array_4_Cint
     d1::Cint
     d2::Cint
     d3::Cint
     d4::Cint
 end
-immutable Array_300_tPoint
+
+struct Array_300_tPoint
     d1::tPoint
     d2::tPoint
     d3::tPoint
@@ -649,7 +666,8 @@ immutable Array_300_tPoint
     d299::tPoint
     d300::tPoint
 end
-immutable Array_256_UInt8
+
+struct  Array_256_UInt8
     d1::UInt8
     d2::UInt8
     d3::UInt8
@@ -907,7 +925,8 @@ immutable Array_256_UInt8
     d255::UInt8
     d256::UInt8
 end
-immutable Array_80_UInt8
+
+struct Array_80_UInt8
     d1::UInt8
     d2::UInt8
     d3::UInt8
@@ -989,7 +1008,8 @@ immutable Array_80_UInt8
     d79::UInt8
     d80::UInt8
 end
-immutable Array_40_UInt8
+
+struct  Array_40_UInt8
     d1::UInt8
     d2::UInt8
     d3::UInt8
@@ -1032,7 +1052,7 @@ immutable Array_40_UInt8
     d40::UInt8
 end
 
-type tCTC
+mutable struct tCTC
     iup_canvas::Ptr{cdCanvas}
     w::Cint
     h::Cint
@@ -1058,13 +1078,13 @@ type tCTC
     line_style::Cint
     line_width::Cint
     fill_mode::Cint
-    font_typeface::Cint
+    font_structface::Cint
     font_style::Cint
     font_size::Cint
     text_alignment::Cint
     text_orientation::Cdouble
     back_opacity::Cint
-    mark_type::Cint
+    mark_struct::Cint
     poly_mode::Cint
     foreground::Cint
     background::Cint
@@ -1096,19 +1116,20 @@ type tCTC
 #    head::Ptr{tList}
 end
 
-type tCTC_t
+mutable struct tCTC_t
     iup_canvas::Ptr{cdCanvas}
     foreground::Cint
     background::Cint
 end
 
-type tLinePos
+mutable struct tLinePos
     x1::Cint
     x2::Cint
     y1::Cint
     y2::Cint
 end
-type tBoxPos
+
+mutable struct tBoxPos
     xmin::Cint
     xmax::Cint
     ymin::Cint
@@ -1116,16 +1137,19 @@ type tBoxPos
     x::Cint
     y::Cint
 end
-type tPixelPos
+
+mutable struct tPixelPos
     x::Cint
     y::Cint
 end
-type tMarkPos
+
+mutable struct tMarkPos
     x::Cint
     y::Cint
     size::Cint
 end
-type tArcPos
+
+mutable struct tArcPos
     xc::Cint
     yc::Cint
     w::Cint

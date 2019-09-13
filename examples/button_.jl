@@ -153,12 +153,12 @@ function button()
     IupSetAttributes(dlg, "MENUBOX = NO, MAXBOX = NO, MINBOX = NO")
 
     # Registers callbacks
-    IupSetCallback(btn_exit,   "ACTION", cfunction(btn_exit_cb,   Int, (),))
-    IupSetCallback(btn_on_off, "ACTION", cfunction(btn_on_off_cb, Int, (),))
-    IupSetCallback(btn_image,  "ACTION", cfunction(btn_image_button_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cint, Cint, Ptr{UInt8})))
+    IupSetCallback(btn_exit,   "ACTION", @cfunction(btn_exit_cb,   Int, (),))
+    IupSetCallback(btn_on_off, "ACTION", @cfunction(btn_on_off_cb, Int, (),))
+    IupSetCallback(btn_image,  "ACTION", @cfunction(btn_image_button_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cint, Cint, Ptr{UInt8})))
 
     IupSetAttribute(btn_big, "BUTTON_CB", "bigtest");
-    IupSetFunction("bigtest", cfunction(btn_big_button_cb, Int, (Ptr{Ihandle}, Cint, Cint)))
+    IupSetFunction("bigtest", @cfunction(btn_big_button_cb, Int, (Ptr{Ihandle}, Cint, Cint)))
 
     # Shows dialog on the center of the screen
     IupShowXY(dlg, IUP_CENTER, IUP_CENTER)

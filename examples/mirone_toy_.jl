@@ -3,9 +3,16 @@ module mirone_toy_
 export
     mirone_toy
 
+using Printf
 using GMT
 using Compat
 using IUP
+
+# forward declaration to workaround '@cfunction'
+function cbCanvasRepaint end
+function cbCanvasMap end
+function cmOpen end
+function cmdDrawPoly end
 
 const NEWPOINT = 0
 const MOVE = 1
@@ -13,13 +20,7 @@ const CLOSE = 2
 const CENTER = 3
 const REPAINT = 4
 
-type Handles
-    figure1::Ptr{Ihandle}
-    iup_canvas::Ptr{Ihandle}
-    cd_canvas::Ptr{cdCanvas}    # cdCanvas is a composite type
-end
-
-type LineSegPix
+mutable struct LineSegPix
     x1::Cint
     x2::Cint
     y1::Cint
@@ -38,7 +39,7 @@ function mirone_toy()
 
     imlabCreateButtonImages()
 
-     mainMenu = CreateMainMenu()
+    mainMenu = CreateMainMenu()
 
     # Associates handle "mainMenu" with mainMenu
     IupSetHandle("mainMenu", mainMenu)
@@ -92,7 +93,7 @@ function mirone_toy()
     # Creates a dialog
     main_window = IupDialog(vbMainDesktop)
 
-    handles = Handles(C_NULL, C_NULL, C_NULL)
+    handles = IUP.Handles(C_NULL, C_NULL, C_NULL)
     handles.figure1 = main_window
     handles.iup_canvas = iup_canvas
     guidata(main_window, handles)
@@ -125,8 +126,8 @@ end
 function blabla()
     iup_canvas = IupCanvas()
     IupSetAttribute(iup_canvas, "BORDER", "NO");
-    IupSetCallback(iup_canvas, "ACTION", cfunction(cbCanvasRepaint, Int, (Ptr{Ihandle},)))
-    IupSetCallback(iup_canvas, "MAP_CB", cfunction(cbCanvasMap, Int, (Ptr{Ihandle},)))
+    IupSetCallback(iup_canvas, "ACTION", @cfunction(cbCanvasRepaint, Int, (Ptr{Ihandle},)))
+    IupSetCallback(iup_canvas, "MAP_CB", @cfunction(cbCanvasMap, Int, (Ptr{Ihandle},)))
     return iup_canvas
 end
 
@@ -144,8 +145,8 @@ end
 
 # ---------------------------------------------------------------------------------------------
 function setcallbacks(handles::Handles)
-    IupSetFunction("imImgWinOpen",  cfunction(cmOpen, Int, (Ptr{Ihandle},)))
-    IupSetFunction("imImgWinLine",  cfunction(cmdDrawPoly, Int, (Ptr{Ihandle},)))
+    IupSetFunction("imImgWinOpen",  @cfunction(cmOpen, Int, (Ptr{Ihandle},)))
+    IupSetFunction("imImgWinLine",  @cfunction(cmdDrawPoly, Int, (Ptr{Ihandle},)))
 
     #IupSetFunction("cmdRepaint", (Icallback) fRepaint);
     WindowButtonDownFcn(handles.iup_canvas, fButtonCB)
@@ -156,7 +157,7 @@ end
 # ------------------------------------------------------------------------
 function fMotionCB(hand::Ptr{Ihandle}, x::Int32, y::Int32, r::Ptr{UInt8})
     handles = guidata(hand)
-    yp = unsafe_convert(Ptr{Cint}, pointer([y]))
+    yp = Base.unsafe_convert(Ptr{Cint}, pointer([y]))
     cdCanvasUpdateYAxis(handles.cd_canvas, yp)
     y = unsafe_load(yp)
     polygon(handles, MOVE, x, y)
@@ -186,7 +187,15 @@ function fButtonCB(hand::Ptr{Ihandle}, b::Char, e::Integer, x::Integer, y::Integ
     if (b == IUP_BUTTON1)        # Left button
         if (e != 0)                # button was pressed
             line_seg = getappdata(handles.iup_canvas, "lineSeg")
-            if ((try isempty(line_seg) end)) return IUP_DEFAULT end
+            is_empty = false;
+            try 
+                if isempty(line_seg)
+                    is_empty = true
+                end
+            catch
+                is_empty = false
+            end
+            if (is_empty) return IUP_DEFAULT end
 @show(line_seg)
             line_seg.x1 = x
             line_seg.y1 = y
@@ -206,7 +215,15 @@ function polygon(handles::Handles, what::Integer, x::Integer, y::Integer)
 
     line_seg = getappdata(handles.iup_canvas, "lineSeg")
 #@show(line_seg)
-    if ((try isempty(line_seg) end) || !line_seg.active) return end
+    is_empty = false;
+    try 
+        if isempty(line_seg)
+            is_empty = true
+        end
+    catch
+        is_empty = false
+    end
+    if ( is_empty || !line_seg.active) return end
 #@show(what)
 
     if (what == NEWPOINT)
@@ -279,8 +296,8 @@ function ShowImage(FileName::String, iup_dialog::Ptr{Ihandle})
     IupSetAttribute(iup_dialog, "imImage")
 
 #
-    error = pointer([0])
-    image = imFileImageLoadBitmap(FileName, 0, error)
+    error = pointer([Cint(0)])
+    image = imFileImageLoadBitmap(FileName, Cint(0), error)
     error = unsafe_load(error)
     if (error != 0)    PrintError(error)    end
     if (image == C_NULL) return end

@@ -8,6 +8,7 @@ using IUP
 export
     dialog1
 
+function quit_cb end
 
 #------------------------example html/examples/C/dialog1.c ----------------------------------
 function dialog1()
@@ -26,7 +27,7 @@ function dialog1()
 
     # Creating dialog's content
     quit_bt = IupButton("Quit")
-    IupSetCallback(quit_bt, "ACTION", cfunction(quit_cb, Int, (),))
+    IupSetCallback(quit_bt, "ACTION", @cfunction(quit_cb, Int, (),))
     IupSetHandle("quit", quit_bt)
 
     # Creating dialog's menu

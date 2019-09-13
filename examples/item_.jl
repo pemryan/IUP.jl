@@ -5,6 +5,10 @@ using IUP
 export
     item
 
+# forward declaration to workaround '@cfunction'
+function item_exit_cb end
+function item_autosave_cb end
+function item_save_cb end
 
 #------------------------example html/examples/C/item.c ----------------------------------
 function item()
@@ -20,8 +24,8 @@ function item()
 
     IupSetAttribute(item_exit, "KEY", "x")  # this is NOT related with the K_X key callback, it will just underline the letter */
 
-    IupSetCallback(item_exit, "ACTION", cfunction(item_exit_cb, Int, (),))
-    IupSetCallback(item_autosave, "ACTION", cfunction(item_autosave_cb, Int, (),))
+    IupSetCallback(item_exit, "ACTION", @cfunction(item_exit_cb, Int, (),))
+    IupSetCallback(item_autosave, "ACTION", @cfunction(item_autosave_cb, Int, (),))
 
     IupSetAttribute(item_autosave, "VALUE", "ON")
     IupSetHandle("item_autosave", item_autosave)        # giving a name to a iup handle
@@ -40,9 +44,9 @@ function item()
     IupSetAttribute(dlg, "GAP", "10")
     IupSetAttribute(dlg, "TITLE", "IupItem")
     IupSetAttribute(dlg, "MENU", "menu")
-    IupSetCallback(dlg, "K_cX", cfunction(item_exit_cb, Int, (),))     # this will also affect the IupText if at focus, since it is used for clipboard cut */
-    IupSetCallback(dlg, "K_cA", cfunction(item_autosave_cb, Int, (),)) # this will also affect the IupText if at focus, since it is used for select all */
-    IupSetCallback(dlg, "K_cS", cfunction(item_save_cb, Int, (),))
+    IupSetCallback(dlg, "K_cX", @cfunction(item_exit_cb, Int, (),))     # this will also affect the IupText if at focus, since it is used for clipboard cut */
+    IupSetCallback(dlg, "K_cA", @cfunction(item_autosave_cb, Int, (),)) # this will also affect the IupText if at focus, since it is used for select all */
+    IupSetCallback(dlg, "K_cS", @cfunction(item_save_cb, Int, (),))
 
     IupShowXY(dlg, IUP_CENTER, IUP_CENTER)
     IupMainLoop()                               # Initializes IUP main loop

@@ -3,16 +3,36 @@ module pplot_
 export
     pplot
 
+using Printf
 using IUP
 
-type Handles
+# forward declaration to workaround '@cfunction'
+function dial1_btndown_cb end
+function dial1_btnup_cb end 
+function dial1_btnup_cb end
+function tgg1_cb end
+function dial2_btndown_cb end
+function dial2_btnup_cb end
+function tgg2_cb end
+function tgg3_cb end
+function tgg4_cb end
+function tgg5_cb end
+function bt1_cb end
+function tabs_tabchange_cb end
+function delete_cb end
+function select_cb end
+function postdraw_cb end
+function predraw_cb end
+function draw_cb end
+
+struct Handles
     figure1::Ptr{Ihandle}
     iup_canvas::Ptr{Ihandle}
     cd_canvas::Ptr{cdCanvas}    # cdCanvas is a composite type
 end
 
 global const MAXPLOT = 6
-global plot = Array{Ptr{Ihandle}}(MAXPLOT)
+global plot = Array{Ptr{Ihandle}}(undef, MAXPLOT)
 
 #=
 global dial1::Ptr{Ihandle}, dial2::Ptr{Ihandle},          # dials for zooming */
@@ -38,7 +58,7 @@ global tabs
 
     IupOpen()    #Initializes IUP
 
-    vboxr = Array{Ptr{Ihandle}}(MAXPLOT+1)     # tabs containing the plots
+    vboxr = Array{Ptr{Ihandle}}(undef, MAXPLOT+1)     # tabs containing the plots
 
     IupControlsOpen();  # init the addicional controls library (we use IupTabs)
     IupPlotOpen();     # init IupPlot library
@@ -69,12 +89,12 @@ global tabs
 
     IupSetAttribute(dial1, "ACTIVE", "NO");
     IupSetAttribute(dial1, "SIZE", "20x52");
-    IupSetCallback(dial1, "BUTTON_PRESS_CB", cfunction(dial1_btndown_cb, Int, (Ptr{Ihandle},)))
-    IupSetCallback(dial1, "MOUSEMOVE_CB", cfunction(dial1_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
-    IupSetCallback(dial1, "BUTTON_RELEASE_CB", cfunction(dial1_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
+    IupSetCallback(dial1, "BUTTON_PRESS_CB", @cfunction(dial1_btndown_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(dial1, "MOUSEMOVE_CB", @cfunction(dial1_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
+    IupSetCallback(dial1, "BUTTON_RELEASE_CB", @cfunction(dial1_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
 
     tgg1 = IupToggle("Y Autoscale");
-    IupSetCallback(tgg1, "ACTION", cfunction(tgg1_cb, Int, (Ptr{Ihandle}, Cint)) )
+    IupSetCallback(tgg1, "ACTION", @cfunction(tgg1_cb, Int, (Ptr{Ihandle}, Cint)) )
     IupSetAttribute(tgg1, "VALUE", "ON");
 
     f1 = IupFrame( IupVbox(boxdial1, tgg1) );
@@ -99,12 +119,12 @@ global tabs
 
     IupSetAttribute(dial2, "ACTIVE", "NO");
     IupSetAttribute(dial2, "SIZE", "64x16");
-    IupSetCallback(dial2, "BUTTON_PRESS_CB", cfunction(dial2_btndown_cb, Int, (Ptr{Ihandle},)))
-    IupSetCallback(dial2, "MOUSEMOVE_CB", cfunction(dial2_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
-    IupSetCallback(dial2, "BUTTON_RELEASE_CB", cfunction(dial2_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
+    IupSetCallback(dial2, "BUTTON_PRESS_CB", @cfunction(dial2_btndown_cb, Int, (Ptr{Ihandle},)))
+    IupSetCallback(dial2, "MOUSEMOVE_CB", @cfunction(dial2_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
+    IupSetCallback(dial2, "BUTTON_RELEASE_CB", @cfunction(dial2_btnup_cb, Int, (Ptr{Ihandle}, Cdouble)) )
 
     tgg2 = IupToggle("X Autoscale");
-    IupSetCallback(tgg2, "ACTION", cfunction(tgg2_cb, Int, (Ptr{Ihandle}, Cint)) )
+    IupSetCallback(tgg2, "ACTION", @cfunction(tgg2_cb, Int, (Ptr{Ihandle}, Cint)) )
 
     f2 = IupFrame( IupVbox(boxdial2, tgg2) )
     IupSetAttribute(f2, "TITLE", "X Zoom")
@@ -113,21 +133,21 @@ global tabs
     IupSetAttribute(lbl1, "SEPARATOR", "HORIZONTAL")
 
     tgg3 = IupToggle("Vertical Grid")
-    IupSetCallback(tgg3, "ACTION", cfunction(tgg3_cb, Int, (Ptr{Ihandle}, Cint)) )
+    IupSetCallback(tgg3, "ACTION", @cfunction(tgg3_cb, Int, (Ptr{Ihandle}, Cint)) )
     tgg4 = IupToggle("Horizontal Grid");
-    IupSetCallback(tgg4, "ACTION", cfunction(tgg4_cb, Int, (Ptr{Ihandle}, Cint)) )
+    IupSetCallback(tgg4, "ACTION", @cfunction(tgg4_cb, Int, (Ptr{Ihandle}, Cint)) )
 
     lbl2 = IupLabel("")
     IupSetAttribute(lbl2, "SEPARATOR", "HORIZONTAL");
 
     tgg5 = IupToggle("Legend");
-    IupSetCallback(tgg5, "ACTION", cfunction(tgg5_cb, Int, (Ptr{Ihandle}, Cint)) )
+    IupSetCallback(tgg5, "ACTION", @cfunction(tgg5_cb, Int, (Ptr{Ihandle}, Cint)) )
 
     lbl3 = IupLabel("");
     IupSetAttribute(lbl3, "SEPARATOR", "HORIZONTAL");
 
     bt1 = IupButton("Export PDF");
-    IupSetCallback(bt1, "ACTION", cfunction(bt1_cb, Int, (Ptr{Ihandle}, )) )
+    IupSetCallback(bt1, "ACTION", @cfunction(bt1_cb, Int, (Ptr{Ihandle}, )) )
 
     vboxl = IupVbox(f1, f2, lbl1, tgg3, tgg4, lbl2, tgg5, lbl3, bt1, C_NULL);
     IupSetAttribute(vboxl, "GAP", "4");
@@ -142,7 +162,7 @@ global tabs
     vboxr[MAXPLOT+1] = C_NULL     # mark end of vector
 
     tabs = IupTabsv(pointer(vboxr)) # create tabs
-    IupSetCallback(tabs, "TABCHANGE_CB", cfunction(tabs_tabchange_cb, Int, (Ptr{Ihandle}, Ptr{Ihandle})) )
+    IupSetCallback(tabs, "TABCHANGE_CB", @cfunction(tabs_tabchange_cb, Int, (Ptr{Ihandle}, Ptr{Ihandle})) )
 
     # dialog
     hbox = IupHbox(vboxl, tabs);
@@ -414,13 +434,13 @@ function InitPlots()
     IupPlotEnd(plot[6]);
     IupSetAttribute(plot[6], "DS_COLOR", "100 100 200");
 #    IupSetAttribute(plot[6], "DS_EDIT", "YES");
-    IupSetCallback(plot[6], "DELETE_CB", cfunction(delete_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble)) )
-    IupSetCallback(plot[6], "SELECT_CB", cfunction(select_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
-    IupSetCallback(plot[6], "CLICKSAMPLE_CB", cfunction(select_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
-    IupSetCallback(plot[6], "POSTDRAW_CB", cfunction(postdraw_cb, Int, (Ptr{Ihandle}, Ptr{cdCanvas})) )
-    IupSetCallback(plot[6], "PREDRAW_CB", cfunction(predraw_cb, Int, (Ptr{Ihandle}, Ptr{cdCanvas})) )
-#    IupSetCallback(plot[6], "EDIT_CB", cfunction(edit_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cfloat, Cfloat, Ptr{Cfloat},  Ptr{Cfloat})) )
-    IupSetCallback(plot[6], "DRAWSAMPLE_CB", cfunction(draw_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
+    IupSetCallback(plot[6], "DELETE_CB", @cfunction(delete_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble)) )
+    IupSetCallback(plot[6], "SELECT_CB", @cfunction(select_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
+    IupSetCallback(plot[6], "CLICKSAMPLE_CB", @cfunction(select_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
+    IupSetCallback(plot[6], "POSTDRAW_CB", @cfunction(postdraw_cb, Int, (Ptr{Ihandle}, Ptr{cdCanvas})) )
+    IupSetCallback(plot[6], "PREDRAW_CB", @cfunction(predraw_cb, Int, (Ptr{Ihandle}, Ptr{cdCanvas})) )
+#    IupSetCallback(plot[6], "EDIT_CB", @cfunction(edit_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cfloat, Cfloat, Ptr{Cfloat},  Ptr{Cfloat})) )
+    IupSetCallback(plot[6], "DRAWSAMPLE_CB", @cfunction(draw_cb, Int, (Ptr{Ihandle}, Cint, Cint, Cdouble, Cdouble, Cint)) )
 end
 
 # ------------------------------------------------------------------------------
@@ -731,9 +751,9 @@ end
 # ----------------------------------------------------------------------------------
 function bt1_cb(self::Ptr{Ihandle})
     ii = tabs_get_index()
-    #cnv = cdCreateCanvas(cdContextPDF(), "pplot.pdf -o");
-    #IupPlotPaintTo(plot[ii], cnv);
-    #cdKillCanvas(cnv);
+    cnv = cdCreateCanvas(IUP.cdContextPDF(), Ptr{Cchar}(pointer("pplot.pdf -o")));
+    IupPlotPaintTo(plot[ii], cnv);
+    cdKillCanvas(cnv);
     return IUP_DEFAULT;
 end
 

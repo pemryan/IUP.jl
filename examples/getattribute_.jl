@@ -10,6 +10,10 @@ module getattribute_
 
 using IUP
 
+# forward declaration to workaround '@cfunction'
+function number_action end
+function k_any end
+
 export
     getattribute
 
@@ -18,8 +22,8 @@ function getattribute()
     IupOpen()                   # Initializes IUP
 
     field = IupText("")                                         # creates TEXT field
-    IupSetCallback(field, "ACTION", cfunction(number_action, Int, (Ptr{Ihandle}, Cint)))   # registers callback
-    IupSetCallback(field, "K_ANY", cfunction(k_any, Int, (Ptr{Ihandle}, Cint)))            # registers callback
+    IupSetCallback(field, "ACTION", @cfunction(number_action, Int, (Ptr{Ihandle}, Cint)))   # registers callback
+    IupSetCallback(field, "K_ANY", @cfunction(k_any, Int, (Ptr{Ihandle}, Cint)))            # registers callback
   
     IupSetAttribute(field, "VALUE", "1.0")                      # defines initial value
 
@@ -47,7 +51,7 @@ end
 function number_action(self::Ptr{Ihandle}, c::Cint)
     caracteres_validos = "0123456789.+-Ee"
 
-    if ((search(caracteres_validos, char(c))) > 0)     # c is a valid character
+    if ((occursin(char(c), caracteres_validos)) > 0)     # c is a valid character
         return IUP_DEFAULT
     elseif (iscntrl(char(c)))                          # c is a control character (TAB, BACKSPACE, ...)
         return IUP_DEFAULT
