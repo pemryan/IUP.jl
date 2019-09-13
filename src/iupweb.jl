@@ -4,6 +4,7 @@
 function IupWebBrowserOpen()
   ccall( (:IupWebBrowserOpen, iup), Cint, (), )
 end
+
 function IupWebBrowser()
   ccall( (:IupWebBrowser, iup), Ptr{Cint}, (), )
 end

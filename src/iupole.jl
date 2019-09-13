@@ -4,6 +4,7 @@
 function IupOleControl()
   ccall( (:IupOleControl, iup), Ptr{Cint}, (), )
 end
+
 function IupOleControlOpen()
   ccall( (:IupOleControlOpen, iup), Cint, (), )
 end

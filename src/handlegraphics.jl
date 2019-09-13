@@ -1,21 +1,22 @@
 # This file has simple functions that mimic (part of) the behavior of the Matlab functions with the same name
 # Figure properties like for example WindowButtonDownFcn() were implemented as functions too.
 
-type Handles
+mutable struct Handles
     figure1::Ptr{Ihandle}
     iup_canvas::Ptr{Ihandle}
     cd_canvas::Ptr{cdCanvas}    # cdCanvas is a composite type
 end
 
 ### Garbage collection [prevention]
-const gc_preserve = ObjectIdDict() # reference counted closures
-function gc_ref(x::ANY)
+const gc_preserve = IdDict() # reference counted closures
+function gc_ref(x::Any)
     global gc_preserve
     #isbits(x) && error("can't gc-preserve an isbits object")
     gc_preserve[x] = (get(gc_preserve, x, 0)::Int)+1
     x
 end
-function gc_unref(x::ANY)
+
+function gc_unref(x::Any)
     global gc_preserve
     #@assert !isbits(x)
     count = get(gc_preserve, x, 0)::Int-1
@@ -36,7 +37,7 @@ function guidata(hand::Ptr{Ihandle}, handles::Handles)
     # Store the handles in the Ihandle hand
     IupSetAttribute(hand, "handles", pointer_from_objref(handles))
 end
-#guidata(hand::Ptr{Void}, handles::Handles) = guidata(convert(Ptr{Ihandle}, hand), handles)
+#guidata(hand::Ptr{Cvoid}, handles::Handles) = guidata(convert(Ptr{Ihandle}, hand), handles)
 
 # -------------------------------------------------------------------------------
 function setappdata(hand::Ptr{Ihandle}, name::String, val)

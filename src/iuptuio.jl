@@ -4,6 +4,7 @@
 function IupTuioOpen()
   ccall( (:IupTuioOpen, iup), Cint, (), )
 end
+
 function IupTuioClient()
   ccall( (:IupTuioClient, iup), Ptr{Cint}, (), )
 end

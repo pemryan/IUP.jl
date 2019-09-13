@@ -362,7 +362,7 @@ function imcdCanvasPutImage(_canvas, _image, _x, _y, _w, _h, _xmin, _xmax, _ymin
     if (isa(_image, Ptr{imImage}))
         _image = unsafe_load(_image)
     end
-    const IM_RGB = 0        # Redefining here to not have to import it from libim.h (Ghrrr)
+    IM_RGB = 0        # Redefining here to not have to import it from libim.h (Ghrrr)
     if (_image.color_space == IM_RGB)
         data = [convert(Ptr{UInt8}, unsafe_load(_image.data,1)),
             convert(Ptr{UInt8}, unsafe_load(_image.data,2)),
